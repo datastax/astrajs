@@ -1,11 +1,3 @@
-# `@astrajs/rest`
+## @astrajs/rest
 
-> TODO: description
-
-## Usage
-
-```
-const rest = require('@astrajs/rest');
-
-// TODO: DEMONSTRATE API
-```
+Connect your NodeJS app to DataStax Astra.

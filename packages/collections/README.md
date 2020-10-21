@@ -1,11 +1,3 @@
-# `@astrajs/collections`
+## @astrajs/collections
 
-> TODO: description
-
-## Usage
-
-```
-const collections = require('@astrajs/collections');
-
-// TODO: DEMONSTRATE API
-```
+Connect your NodeJS app to DataStax Astra.

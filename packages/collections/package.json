@@ -1,17 +1,20 @@
 {
   "name": "@astrajs/collections",
   "version": "0.0.2",
-  "description": "> TODO: description",
+  "description": "DataStax Astra's NodeJS collections client",
   "author": "CRW <chris.wilhite@datastax.com>",
   "homepage": "https://github.com/kidrecursive/astrajs#readme",
   "license": "Apache-2.0",
-  "main": "lib/collections.js",
+  "main": "src/collections.js",
+  "mocha": {
+    "timeout": 10000
+  },
   "directories": {
-    "lib": "lib",
-    "test": "__tests__"
+    "lib": "src",
+    "test": "src"
   },
   "files": [
-    "lib"
+    "src"
   ],
   "publishConfig": {
     "access": "public"
@@ -21,9 +24,17 @@
     "url": "git+https://github.com/kidrecursive/astrajs.git"
   },
   "scripts": {
-    "test": "echo \"Error: run tests from root\" && exit 1"
+    "test": "mocha src/collections.test.js"
   },
   "bugs": {
     "url": "https://github.com/kidrecursive/astrajs/issues"
+  },
+  "devDependencies": {
+    "dotenv": "^8.2.0",
+    "faker": "^5.1.0",
+    "mocha": "^8.2.0"
+  },
+  "dependencies": {
+    "@astrajs/rest": "0.0.2"
   }
 }

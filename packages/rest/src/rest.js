@@ -39,7 +39,7 @@ const axiosRequest = async (options) => {
   }
 };
 
-class Client {
+class AstraClient {
   constructor(options) {
     this.baseUrl = options.baseUrl;
     this.authToken = options.authToken;
@@ -148,6 +148,7 @@ class Client {
 //   setAuthToken: "", // func
 //   username: "", // string
 //   password: "", // string
+//   debug: "", // bool
 // };
 
 const createClient = async (options) => {
@@ -184,7 +185,20 @@ const createClient = async (options) => {
   if (!authToken) {
     throw new Error("@astrajs/rest: authToken required for initialization");
   }
-  return new Client({ ...options, baseUrl, authToken });
+
+  if (options.debug) {
+    axios.interceptors.request.use((config) => {
+      console.log(JSON.stringify(config, null, 2));
+      return config;
+    });
+
+    axios.interceptors.response.use((response) => {
+      console.log(JSON.stringify(response.data, null, 2));
+      return response;
+    });
+  }
+
+  return new AstraClient({ ...options, baseUrl, authToken });
 };
 
 module.exports = { createClient };

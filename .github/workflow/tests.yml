@@ -1,0 +1,98 @@
+name: Tests
+on:
+  pull_request:
+    branches:
+      - master
+jobs:
+  10.x-tests:
+    env:
+      ASTRA_DB_USERNAME: ${{ secrets.ASTRA_DB_USERNAME }}
+      ASTRA_DB_PASSWORD: ${{ secrets.ASTRA_DB_PASSWORD }}
+      ASTRA_DB_KEYSPACE: ${{ secrets.ASTRA_DB_KEYSPACE }}
+      ASTRA_DB_ID: ${{ secrets.ASTRA_DB_ID }}
+      ASTRA_DB_REGION: ${{ secrets.ASTRA_DB_REGION }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [10.x]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: setup lerna
+        run: |
+          npm install -g lerna
+          lerna bootstrap
+      - name: run tests
+        run: lerna run test
+  12.x-tests:
+    env:
+      ASTRA_DB_USERNAME: ${{ secrets.ASTRA_DB_USERNAME }}
+      ASTRA_DB_PASSWORD: ${{ secrets.ASTRA_DB_PASSWORD }}
+      ASTRA_DB_KEYSPACE: ${{ secrets.ASTRA_DB_KEYSPACE }}
+      ASTRA_DB_ID: ${{ secrets.ASTRA_DB_ID }}
+      ASTRA_DB_REGION: ${{ secrets.ASTRA_DB_REGION }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.x]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: setup lerna
+        run: |
+          npm install -g lerna
+          lerna bootstrap
+      - name: run tests
+        run: lerna run test
+  14.x-tests:
+    env:
+      ASTRA_DB_USERNAME: ${{ secrets.ASTRA_DB_USERNAME }}
+      ASTRA_DB_PASSWORD: ${{ secrets.ASTRA_DB_PASSWORD }}
+      ASTRA_DB_KEYSPACE: ${{ secrets.ASTRA_DB_KEYSPACE }}
+      ASTRA_DB_ID: ${{ secrets.ASTRA_DB_ID }}
+      ASTRA_DB_REGION: ${{ secrets.ASTRA_DB_REGION }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [14.x]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: setup lerna
+        run: |
+          npm install -g lerna
+          lerna bootstrap
+      - name: run tests
+        run: lerna run test
+  16.x-tests:
+    env:
+      ASTRA_DB_USERNAME: ${{ secrets.ASTRA_DB_USERNAME }}
+      ASTRA_DB_PASSWORD: ${{ secrets.ASTRA_DB_PASSWORD }}
+      ASTRA_DB_KEYSPACE: ${{ secrets.ASTRA_DB_KEYSPACE }}
+      ASTRA_DB_ID: ${{ secrets.ASTRA_DB_ID }}
+      ASTRA_DB_REGION: ${{ secrets.ASTRA_DB_REGION }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: setup lerna
+        run: |
+          npm install -g lerna
+          lerna bootstrap
+      - name: run tests
+        run: lerna run test

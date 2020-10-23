@@ -143,7 +143,7 @@ describe("AstraJS", () => {
       const document = await testCollection.findOne({
         firstName: { $eq: `Cliff-${userId}` },
       });
-      assert.equal(document.lastName, "Wicklow");
+      assert.equal(document.firstName, `Cliff-${userId}`);
     });
   });
 });

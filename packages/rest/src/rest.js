@@ -15,6 +15,77 @@ const HTTP_METHODS = {
   delete: "DELETE",
 };
 
+/**
+ * Configure an AstraClient to connect to Astra or a Stargate instance
+ *
+ * @param {Object} options A set of AstraJS REST connection options
+ * @param {string} options.astraDatabaseId The database id of your Astra database
+ * @param {string} options.astraDatabaseRegion The region of your Astra database
+ * @param {string} options.username Reconnect using the provided credentials
+ * @param {string} options.password Reconnect using the provided credentials
+ * @param {string} [options.baseUrl] The url of your Stargate instance
+ * @param {string} [options.authToken] A valid stargate/Asta auth token
+ * @param {string} [options.autoReconnect] Reconnect using the provided credentials
+ * @param {Function} [options.getAuthToken] A function that returns a promise which returns a valid authToken, for reading tokens from shared storage
+ * @param {Function} [options.setAuthToken] A function that returns a promise which takes an authToken, for writing tokens to shared storage
+ * @param {string} [options.debug] Show detailed request logs
+ * @returns {Promise} Resolves to an AstraClient instance
+ */
+const createClient = async (options) => {
+  // for now, we do not support usage in browsers
+  if (typeof window !== "undefined") {
+    throw new Error("@astrajs/rest: not for use in a web browser");
+  }
+
+  // set the baseURL to Astra, if the user provides a Stargate URL, use that instead.
+  // astraDatabaseId and astraDatabaseRegion are required if no other URL is provided.
+  let baseUrl = null;
+  if ((options.astraDatabaseId, options.astraDatabaseRegion)) {
+    baseUrl = `https://${options.astraDatabaseId}-${options.astraDatabaseRegion}.apps.astra.datastax.com`;
+  } else if (options.baseUrl) {
+    baseUrl = options.baseUrl;
+  }
+  if (!baseUrl) {
+    throw new Error("@astrajs/rest: baseUrl required for initialization");
+  }
+
+  // provision an auth token from Astra, Stargate, or user provided storage
+  let authToken = null;
+  if (options.authToken) {
+    authToken = options.authToken;
+  } else if (options.getAuthToken) {
+    authToken = await options.getAuthToken();
+  } else {
+    const response = await axiosRequest({
+      url: baseUrl + AUTH_PATH,
+      method: HTTP_METHODS.post,
+      data: {
+        username: options.username,
+        password: options.password,
+      },
+    });
+    authToken = response.data.authToken;
+  }
+  if (!authToken) {
+    throw new Error("@astrajs/rest: authToken required for initialization");
+  }
+
+  // setup detailed request logging if the user desires it
+  if (options.debug) {
+    axios.interceptors.request.use((config) => {
+      console.log(JSON.stringify(config, null, 2));
+      return config;
+    });
+
+    axios.interceptors.response.use((response) => {
+      console.log(JSON.stringify(response.data, null, 2));
+      return response;
+    });
+  }
+
+  return new AstraClient({ ...options, baseUrl, authToken });
+};
+
 const axiosRequest = async (options) => {
   try {
     const response = await axios({
@@ -39,7 +110,25 @@ const axiosRequest = async (options) => {
   }
 };
 
+/**
+ * An Astra/Stargate client.
+ *
+ * @class
+ * @classdesc An Astra/Stargate client.
+ * @returns {AstraClient}
+ */
 class AstraClient {
+  /**
+   * @param {Object} options A set of AstraJS REST connection options
+   * @param {string} options.baseUrl The url of your database
+   * @param {string} options.authToken A valid stargate/Asta auth token
+   * @param {string} options.username Reconnect using the provided credentials
+   * @param {string} options.password Reconnect using the provided credentials
+   * @param {string} [options.autoReconnect] Reconnect using the provided credentials
+   * @param {Function} [options.getAuthToken] A function that returns a promise which returns a valid authToken, for reading tokens from shared storage
+   * @param {Function} [options.setAuthToken] A function that returns a promise which takes an authToken, for writing tokens to shared storage
+   * @returns {AstraClient}
+   */
   constructor(options) {
     this.baseUrl = options.baseUrl;
     this.authToken = options.authToken;
@@ -57,7 +146,7 @@ class AstraClient {
     if (this.authToken) {
       return this.authToken;
     }
-    await this.connect();
+    await this._connect();
     return this.authToken;
   }
 
@@ -68,7 +157,7 @@ class AstraClient {
     this.authToken = authToken;
   }
 
-  async connect() {
+  async _connect() {
     const response = await axiosRequest({
       url: this.baseUrl + AUTH_PATH,
       method: HTTP_METHODS.post,
@@ -80,30 +169,48 @@ class AstraClient {
     this._setAuthToken(response.data.authToken);
   }
 
-  async request(options) {
+  async _request(options) {
     const response = await axiosRequest({
       ...options,
       authToken: this.authToken,
     });
     if (response.status === 401 && this.autoReconnect) {
       console.log("@astrajs/rest: reconnecting");
-      await this.connect();
+      await this._connect();
       return await axiosRequest(options);
     }
     return response;
   }
 
-  async get(path, data, options) {
-    return await this.request({
+  /**
+   * Issue a HTTP GET request to Astra/Stargate
+   *
+   * @param  {string} path
+   * @param  {Object} [options] The request options
+   * @param  {Object} [options.params] The request query parameters
+   * @param  {int} [options.timeout] The request timeout, in milliseconds
+   * @returns {Promise} Resolves to a response instance { status: 200, data: {...} }
+   */
+  async get(path, options) {
+    return await this._request({
       url: this.baseUrl + path,
       method: HTTP_METHODS.get,
-      data,
       ...options,
     });
   }
 
+  /**
+   * Issue a HTTP POST request to Astra/Stargate
+   *
+   * @param  {string} path
+   * @param  {Object} data The request body
+   * @param  {Object} [options] The request options
+   * @param  {Object} [options.params] The request query parameters
+   * @param  {int} [options.timeout] The request timeout, in milliseconds
+   * @returns {Promise} Resolves to a response instance { status: 200, data: {...} }
+   */
   async post(path, data, options) {
-    return await this.request({
+    return await this._request({
       url: this.baseUrl + path,
       method: HTTP_METHODS.post,
       data,
@@ -111,8 +218,18 @@ class AstraClient {
     });
   }
 
+  /**
+   * Issue a HTTP PUT request to Astra/Stargate
+   *
+   * @param  {string} path
+   * @param  {Object} data The request body
+   * @param  {Object} [options] The request options
+   * @param  {Object} [options.params] The request query parameters
+   * @param  {int} [options.timeout] The request timeout, in milliseconds
+   * @returns {Promise} Resolves to a response instance { status: 200, data: {...} }
+   */
   async put(path, data, options) {
-    return await this.request({
+    return await this._request({
       url: this.baseUrl + path,
       method: HTTP_METHODS.put,
       data,
@@ -120,8 +237,18 @@ class AstraClient {
     });
   }
 
+  /**
+   * Issue a HTTP PATCH request to Astra/Stargate
+   *
+   * @param  {string} path
+   * @param  {Object} data The request body
+   * @param  {Object} [options] The request options
+   * @param  {Object} [options.params] The request query parameters
+   * @param  {int} [options.timeout] The request timeout, in milliseconds
+   * @returns {Promise} Resolves to a response instance { status: 200, data: {...} }
+   */
   async patch(path, data, options) {
-    return await this.request({
+    return await this._request({
       url: this.baseUrl + path,
       method: HTTP_METHODS.patch,
       data,
@@ -129,76 +256,22 @@ class AstraClient {
     });
   }
 
+  /**
+   * Issue a HTTP DELETE request to Astra/Stargate
+   *
+   * @param  {string} path
+   * @param  {Object} [options] The request options
+   * @param  {Object} [options.params] The request query parameters
+   * @param  {int} [options.timeout] The request timeout, in milliseconds
+   * @returns {Promise} Resolves to a response instance { status: 200, data: {...} }
+   */
   async delete(path, options) {
-    return await this.request({
+    return await this._request({
       url: this.baseUrl + path,
       method: HTTP_METHODS.delete,
       ...options,
     });
   }
 }
-
-// const options = {
-//   baseUrl: "", // string
-//   astraDatabaseId: "",
-//   astraDatabaseRegion: "",
-//   authToken: "", // string
-//   autoReconnect: "", // bool
-//   getAuthToken: "", // func
-//   setAuthToken: "", // func
-//   username: "", // string
-//   password: "", // string
-//   debug: "", // bool
-// };
-
-const createClient = async (options) => {
-  if (typeof window !== "undefined") {
-    throw new Error("@astrajs/rest: not for use in a web browser");
-  }
-
-  let baseUrl = null;
-  if ((options.astraDatabaseId, options.astraDatabaseRegion)) {
-    baseUrl = `https://${options.astraDatabaseId}-${options.astraDatabaseRegion}.apps.astra.datastax.com`;
-  } else if (options.baseUrl) {
-    baseUrl = options.baseUrl;
-  }
-  if (!baseUrl) {
-    throw new Error("@astrajs/rest: baseUrl required for initialization");
-  }
-
-  let authToken = null;
-  if (options.authToken) {
-    authToken = options.authToken;
-  } else if (options.getAuthToken) {
-    authToken = await options.getAuthToken();
-  } else {
-    const response = await axiosRequest({
-      url: baseUrl + AUTH_PATH,
-      method: HTTP_METHODS.post,
-      data: {
-        username: options.username,
-        password: options.password,
-      },
-    });
-    authToken = response.data.authToken;
-  }
-  if (!authToken) {
-    throw new Error("@astrajs/rest: authToken required for initialization");
-  }
-
-  if (options.debug) {
-    axios.interceptors.request.use((config) => {
-      console.log(JSON.stringify(config, null, 2));
-      return config;
-    });
-
-    axios.interceptors.response.use((response) => {
-      console.log(JSON.stringify(response.data, null, 2));
-      return response;
-    });
-  }
-
-  return new AstraClient({ ...options, baseUrl, authToken });
-};
 
 module.exports = { createClient };

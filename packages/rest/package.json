@@ -35,6 +35,7 @@
   },
   "devDependencies": {
     "dotenv": "^8.2.0",
+    "doxdox": "^3.0.0",
     "faker": "^5.1.0",
     "mocha": "^8.2.0"
   }

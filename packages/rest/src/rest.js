@@ -92,18 +92,18 @@ const axiosRequest = async (options) => {
       url: options.url,
       data: options.data,
       params: options.params,
-      method: options.method ?? DEFAULT_METHOD,
-      timeout: options.timeout ?? DEFAULT_TIMEOUT,
+      method: options.method ? options.method : DEFAULT_METHOD,
+      timeout: options.timeout ? options.timeout : DEFAULT_TIMEOUT,
       headers: {
         Accepts: "application/json",
         "Content-Type": "application/json",
         "X-Requested-With": REQUESTED_WITH,
-        "X-Cassandra-Token": options.authToken ?? "",
+        "X-Cassandra-Token": options.authToken ? options.authToken : "",
       },
     });
     return {
       status: response.status,
-      data: response.data.data ?? response.data,
+      data: response.data.data ? response.data.data : response.data,
     };
   } catch (error) {
     throw new Error("Request Failed: " + error.message);
@@ -132,7 +132,7 @@ class AstraClient {
   constructor(options) {
     this.baseUrl = options.baseUrl;
     this.authToken = options.authToken;
-    this.autoReconnect = options.autoReconnect ?? true;
+    this.autoReconnect = options.autoReconnect ? options.autoReconnect : true;
     this.getAuthToken = options.getAuthToken;
     this.setAuthToken = options.setAuthToken;
     this.username = options.username;

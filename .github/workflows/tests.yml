@@ -4,7 +4,7 @@ on:
     branches:
       - master
 jobs:
-  10.x-tests:
+  tests-10:
     env:
       ASTRA_DB_USERNAME: ${{ secrets.ASTRA_DB_USERNAME }}
       ASTRA_DB_PASSWORD: ${{ secrets.ASTRA_DB_PASSWORD }}
@@ -27,7 +27,7 @@ jobs:
           lerna bootstrap
       - name: run tests
         run: lerna run test
-  12.x-tests:
+  tests-12:
     env:
       ASTRA_DB_USERNAME: ${{ secrets.ASTRA_DB_USERNAME }}
       ASTRA_DB_PASSWORD: ${{ secrets.ASTRA_DB_PASSWORD }}
@@ -50,7 +50,7 @@ jobs:
           lerna bootstrap
       - name: run tests
         run: lerna run test
-  14.x-tests:
+  tests-14:
     env:
       ASTRA_DB_USERNAME: ${{ secrets.ASTRA_DB_USERNAME }}
       ASTRA_DB_PASSWORD: ${{ secrets.ASTRA_DB_PASSWORD }}
@@ -73,7 +73,7 @@ jobs:
           lerna bootstrap
       - name: run tests
         run: lerna run test
-  16.x-tests:
+  tests-16:
     env:
       ASTRA_DB_USERNAME: ${{ secrets.ASTRA_DB_USERNAME }}
       ASTRA_DB_PASSWORD: ${{ secrets.ASTRA_DB_PASSWORD }}

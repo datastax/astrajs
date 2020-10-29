@@ -33,9 +33,9 @@ const HTTP_METHODS = {
  */
 const createClient = async (options) => {
   // for now, we do not support usage in browsers
-  if (typeof window !== "undefined") {
-    throw new Error("@astrajs/rest: not for use in a web browser");
-  }
+  // if (typeof window !== "undefined") {
+  //   throw new Error("@astrajs/rest: not for use in a web browser");
+  // }
 
   // set the baseURL to Astra, if the user provides a Stargate URL, use that instead.
   // astraDatabaseId and astraDatabaseRegion are required if no other URL is provided.

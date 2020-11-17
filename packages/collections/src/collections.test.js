@@ -60,6 +60,15 @@ describe("AstraJS", () => {
       assert.equal(document.home.state, "NY");
     });
 
+    it("should create a document without an ID", async () => {
+      const res = await testCollection.create({
+        firstName: "New",
+        lastName: "Guy",
+      });
+      const document = await testCollection.get(res.documentId);
+      assert.equal(document.firstName, "New");
+    });
+
     it("should udpate a document", async () => {
       await testCollection.update(documentId, {
         firstName: "Dang",

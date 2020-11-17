@@ -52,7 +52,12 @@ const users = await usersCollection.find({ name: { $eq: "Cliff" } });
 // find a single user
 const user = await usersCollection.findOne({ name: { $eq: "dang" } });
 
-// create a new user
+// create a new document (a documentId is generated)
+const user = await usersCollection.create({
+  name: "New Guy",
+});
+
+// create a new user (specifying documentId)
 const user = await usersCollection.create("cliff@wicklow.com", {
   name: "cliff",
 });

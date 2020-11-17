@@ -89,7 +89,14 @@ class AstraCollection {
   }
 
   async create(path, document) {
-    return this._put(path, document);
+    if (typeof path === "string") {
+      return this._put(path, document);
+    }
+    const response = await this.restClient.post(`${this.basePath}`, path);
+    if (response.status === 201) {
+      return response.data;
+    }
+    return null;
   }
 
   async update(path, document) {

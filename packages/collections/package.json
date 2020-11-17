@@ -1,6 +1,6 @@
 {
   "name": "@astrajs/collections",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "DataStax Astra's NodeJS collections client",
   "author": "CRW <chris.wilhite@datastax.com>",
   "homepage": "https://github.com/kidrecursive/astrajs#readme",
@@ -36,6 +36,6 @@
     "mocha": "^8.2.0"
   },
   "dependencies": {
-    "@astrajs/rest": "^0.0.5"
+    "@astrajs/rest": "^0.0.6"
   }
 }

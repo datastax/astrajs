@@ -1,6 +1,6 @@
 {
   "name": "@astrajs/rest",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "DataStax Astra's NodeJS REST client",
   "author": "CRW <chris.wilhite@datastax.com>",
   "homepage": "https://github.com/kidrecursive/astrajs#readme",

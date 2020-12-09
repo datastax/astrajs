@@ -6,7 +6,7 @@ const _ = require("lodash");
 const REQUESTED_WITH = "@astrajs/rest";
 const AUTH_PATH = "/api/rest/v1/auth";
 const DEFAULT_METHOD = "get";
-const DEFAULT_TIMEOUT = 10000;
+const DEFAULT_TIMEOUT = 30000;
 const HTTP_METHODS = {
   get: "GET",
   post: "POST",

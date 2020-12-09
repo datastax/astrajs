@@ -4,7 +4,7 @@ const axios = require("axios");
 const _ = require("lodash");
 
 const REQUESTED_WITH = "@astrajs/rest";
-const AUTH_PATH = "/api/rest/v1/auth";
+const DEFAULT_AUTH_PATH = "/api/rest/v1/auth";
 const DEFAULT_METHOD = "get";
 const DEFAULT_TIMEOUT = 30000;
 const HTTP_METHODS = {
@@ -16,14 +16,15 @@ const HTTP_METHODS = {
 };
 
 /**
- * Configure an AstraClient to connect to Astra or a Stargate instance
+ * Configure an AstraClient to connect to Astra
  *
  * @param {Object} options A set of AstraJS REST connection options
  * @param {string} options.astraDatabaseId The database id of your Astra database
  * @param {string} options.astraDatabaseRegion The region of your Astra database
  * @param {string} options.username Reconnect using the provided credentials
  * @param {string} options.password Reconnect using the provided credentials
- * @param {string} [options.baseUrl] The url of your Stargate instance
+ * @param {string} [options.baseUrl] The url of your Astra/Stargate REST instance
+ * @param {string} [options.authUrl] A separate auth URL for Stargate
  * @param {string} [options.authToken] A valid stargate/Asta auth token
  * @param {string} [options.autoReconnect] Reconnect using the provided credentials
  * @param {Function} [options.getAuthToken] A function that returns a promise which returns a valid authToken, for reading tokens from shared storage
@@ -57,7 +58,7 @@ const createClient = async (options) => {
     authToken = await options.getAuthToken();
   } else {
     const response = await axiosRequest({
-      url: baseUrl + AUTH_PATH,
+      url: options.authUrl ? options.authUrl : baseUrl + DEFAULT_AUTH_PATH,
       method: HTTP_METHODS.post,
       data: {
         username: options.username,
@@ -131,7 +132,9 @@ class AstraClient {
    */
   constructor(options) {
     this.baseUrl = options.baseUrl;
+    this.baseApiPath = options.baseApiPath;
     this.authToken = options.authToken;
+    this.authUrl = options.authUrl;
     this.autoReconnect = options.autoReconnect ? options.autoReconnect : true;
     this.getAuthToken = options.getAuthToken;
     this.setAuthToken = options.setAuthToken;
@@ -159,7 +162,7 @@ class AstraClient {
 
   async _connect() {
     const response = await axiosRequest({
-      url: this.baseUrl + AUTH_PATH,
+      url: this.authUrl ? this.authUrl : this.baseUrl + DEFAULT_AUTH_PATH,
       method: HTTP_METHODS.post,
       data: {
         username: this.username,
@@ -274,4 +277,4 @@ class AstraClient {
   }
 }
 
-module.exports = { createClient };
+module.exports = { createClient, axiosRequest };

@@ -3,6 +3,7 @@
 const astraRest = require("@astrajs/rest");
 
 const DEFAULT_PAGE_SIZE = 20;
+const DEFAULT_BASE_PATH = "/api/rest/v2/namespaces";
 
 class AstraDocumentClient {
   constructor(restClient) {
@@ -31,10 +32,13 @@ class AstraNamespace {
 
 class AstraCollection {
   constructor(restClient, namespaceName, collectionName) {
+    const basePath = restClient.baseApiPath
+      ? restClient.baseApiPath
+      : DEFAULT_BASE_PATH;
     this.restClient = restClient;
     this.namespaceName = namespaceName;
     this.collectionName = collectionName;
-    this.basePath = `/api/rest/v2/namespaces/${namespaceName}/collections/${collectionName}`;
+    this.basePath = `${basePath}/${namespaceName}/collections/${collectionName}`;
   }
 
   async _get(path, options) {
@@ -125,7 +129,7 @@ class AstraCollection {
 
 const createClient = async (options) => {
   const restClient = await astraRest.createClient(options);
-  return new AstraDocumentClient(restClient);
+  return new AstraDocumentClient(restClient, options.apiBasePath);
 };
 
 module.exports = { createClient };

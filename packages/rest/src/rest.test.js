@@ -9,19 +9,6 @@ const _ = require("lodash");
 // setup envars
 require("dotenv").config();
 
-const stargateAuthUrl = "http://localhost:8081/v1/auth";
-const stargateBaseUrl = "http://localhost:8082";
-/* start stargate:
-docker run --name stargate \
-  -p 8080:8080 -p 8081:8081 \
-  -p 8082:8082 -p 127.0.0.1:9042:9042 \
-  -e CLUSTER_NAME=stargate \
-  -e CLUSTER_VERSION=6.8 \
-  -e DEVELOPER_MODE=true \
-  -e DSE=1 \
-  stargateio/stargate-dse-68:v1.0.0
-*/
-
 describe("AstraJS REST", () => {
   describe("AstraJS REST Client", () => {
     it("should initialize an AstraDB REST Client", async () => {
@@ -39,10 +26,10 @@ describe("AstraJS REST", () => {
   describe("Stargate REST Client", () => {
     it("should initialize a Stargate REST Client", async () => {
       const stargateClient = await astraRest.createClient({
-        authUrl: stargateAuthUrl,
-        baseUrl: stargateBaseUrl,
-        username: "cassandra",
-        password: "cassandra",
+        authUrl: process.env.STARGATE_AUTH_URL,
+        baseUrl: process.env.STARGATE_BASE_URL,
+        username: process.env.STARGATE_USERNAME,
+        password: process.env.STARGATE_PASSWORD,
       });
 
       assert.notEqual(stargateClient, null);
@@ -119,10 +106,10 @@ describe("AstraJS REST", () => {
 
     before(async () => {
       stargateClient = await astraRest.createClient({
-        authUrl: stargateAuthUrl,
-        baseUrl: stargateBaseUrl,
-        username: "cassandra",
-        password: "cassandra",
+        authUrl: process.env.STARGATE_AUTH_URL,
+        baseUrl: process.env.STARGATE_BASE_URL,
+        username: process.env.STARGATE_USERNAME,
+        password: process.env.STARGATE_PASSWORD,
       });
 
       await stargateClient.post("/v2/schemas/namespaces", {

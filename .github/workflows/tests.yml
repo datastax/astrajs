@@ -3,6 +3,8 @@ on:
   pull_request:
     branches:
       - master
+  schedule:
+    - cron: "0 * * * *"
 jobs:
   tests:
     env:
@@ -11,7 +13,24 @@ jobs:
       ASTRA_DB_KEYSPACE: ${{ secrets.ASTRA_DB_KEYSPACE }}
       ASTRA_DB_ID: ${{ secrets.ASTRA_DB_ID }}
       ASTRA_DB_REGION: ${{ secrets.ASTRA_DB_REGION }}
+      STARGATE_BASE_URL: ${{ secrets.STARGATE_BASE_URL }}
+      STARGATE_AUTH_URL: ${{ secrets.STARGATE_AUTH_URL }}
+      STARGATE_USERNAME: ${{ secrets.STARGATE_USERNAME }}
+      STARGATE_PASSWORD: ${{ secrets.STARGATE_PASSWORD }}
     runs-on: ubuntu-latest
+    services:
+      stargate:
+        image: stargateio/stargate-dse-68:v1.0.0
+        env:
+          CLUSTER_NAME: stargate
+          CLUSTER_VERSION: 6.8
+          DEVELOPER_MODE: true
+          DSE: 1
+        ports:
+          - 8080:8080
+          - 8081:8081
+          - 8082:8082
+          - 9042:9042
     strategy:
       matrix:
         node-version: ["10", "12", "14"]

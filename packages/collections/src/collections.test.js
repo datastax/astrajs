@@ -7,19 +7,6 @@ const faker = require("faker");
 // setup envars
 require("dotenv").config();
 
-const stargateAuthUrl = "http://localhost:8081/v1/auth";
-const stargateBaseUrl = "http://localhost:8082";
-/* start stargate:
-docker run --name stargate \
-  -p 8080:8080 -p 8081:8081 \
-  -p 8082:8082 -p 127.0.0.1:9042:9042 \
-  -e CLUSTER_NAME=stargate \
-  -e CLUSTER_VERSION=6.8 \
-  -e DEVELOPER_MODE=true \
-  -e DSE=1 \
-  stargateio/stargate-dse-68:v1.0.0
-*/
-
 describe("AstraJS", () => {
   describe("Astra collections client", () => {
     it("should initialize an Astra collections client", async () => {
@@ -37,10 +24,10 @@ describe("AstraJS", () => {
   describe("Stargate collections Client", () => {
     it("should initialize a Stargate collections Client", async () => {
       const stargateClient = await astraCollections.createClient({
-        authUrl: stargateAuthUrl,
-        baseUrl: stargateBaseUrl,
-        username: "cassandra",
-        password: "cassandra",
+        authUrl: process.env.STARGATE_AUTH_URL,
+        baseUrl: process.env.STARGATE_BASE_URL,
+        username: process.env.STARGATE_USERNAME,
+        password: process.env.STARGATE_PASSWORD,
       });
 
       assert.notEqual(stargateClient, null);
@@ -192,18 +179,20 @@ describe("AstraJS", () => {
 
     before(async () => {
       stargateClient = await astraCollections.createClient({
-        authUrl: stargateAuthUrl,
-        baseUrl: stargateBaseUrl,
         baseApiPath: "/v2/namespaces",
-        username: "cassandra",
-        password: "cassandra",
+        authUrl: process.env.STARGATE_AUTH_URL,
+        baseUrl: process.env.STARGATE_BASE_URL,
+        username: process.env.STARGATE_USERNAME,
+        password: process.env.STARGATE_PASSWORD,
       });
 
       await stargateClient.restClient.post("/v2/schemas/namespaces", {
         name: namespace,
       });
 
-      testCollection = stargateClient.namespace(namespace).collection(collection);
+      testCollection = stargateClient
+        .namespace(namespace)
+        .collection(collection);
     });
 
     after(async () => {

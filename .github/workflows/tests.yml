@@ -44,5 +44,8 @@ jobs:
         run: |
           npm install -g lerna
           lerna bootstrap
+      - name: wait for stargate
+        run: |
+          sleep 1m
       - name: run tests
         run: lerna run test

@@ -42,12 +42,24 @@ describe("AstraJS", () => {
     const documentId = faker.random.alphaNumeric(8);
 
     before(async () => {
-      const astraClient = await astraCollections.createClient({
-        astraDatabaseId: process.env.ASTRA_DB_ID,
-        astraDatabaseRegion: process.env.ASTRA_DB_REGION,
-        username: process.env.ASTRA_DB_USERNAME,
-        password: process.env.ASTRA_DB_PASSWORD,
-      });
+      let opts;
+      if (process.env.ASTRA_DB_ID) {
+        opts = {
+          astraDatabaseId: process.env.ASTRA_DB_ID,
+          astraDatabaseRegion: process.env.ASTRA_DB_REGION,
+          username: process.env.ASTRA_DB_USERNAME,
+          password: process.env.ASTRA_DB_PASSWORD,
+        };
+      } else if (process.env.STARGATE_BASE_URL) {
+        opts = {
+          authUrl: process.env.STARGATE_AUTH_URL,
+          baseUrl: process.env.STARGATE_BASE_URL,
+          username: process.env.STARGATE_USERNAME,
+          password: process.env.STARGATE_PASSWORD,
+        };
+      } 
+      
+      const astraClient = await astraCollections.createClient(opts);
       testCollection = astraClient.namespace(namespace).collection(collection);
     });
 

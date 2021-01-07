@@ -44,7 +44,11 @@ const createClient = async (options) => {
   if ((options.astraDatabaseId, options.astraDatabaseRegion)) {
     baseUrl = `https://${options.astraDatabaseId}-${options.astraDatabaseRegion}.apps.astra.datastax.com`;
   } else if (options.baseUrl) {
-    baseUrl = options.baseUrl;
+    if (options.baseUrl.endsWith('/api/rest')) {
+      baseUrl = options.baseUrl.substring(0, options.baseUrl.length - 9);
+    } else {
+      baseUrl = options.baseUrl;
+    }
   }
   if (!baseUrl) {
     throw new Error("@astrajs/rest: baseUrl required for initialization");

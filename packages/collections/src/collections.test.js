@@ -56,6 +56,7 @@ describe("AstraJS", () => {
           baseUrl: process.env.STARGATE_BASE_URL,
           username: process.env.STARGATE_USERNAME,
           password: process.env.STARGATE_PASSWORD,
+          debug: true,
         };
       } 
       

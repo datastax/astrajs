@@ -111,7 +111,8 @@ const axiosRequest = async (options) => {
       data: response.data.data ? response.data.data : response.data,
     };
   } catch (error) {
-    throw new Error("Request Failed: " + error.message);
+    console.log("Error found:", error)
+    throw new Error(error);
   }
 };
 

@@ -38,7 +38,7 @@ describe("AstraJS", () => {
     // setup test context
     let testCollection = null;
     const namespace = process.env.ASTRA_DB_KEYSPACE;
-    const collection = "test";
+    const collection = "test_" + Math.random().toString(36).replace(/[^a-z]+/g, '');
     const documentId = faker.random.alphaNumeric(8);
 
     before(async () => {
@@ -187,7 +187,7 @@ describe("AstraJS", () => {
     let testCollection = null;
     let stargateClient = null;
     const namespace = process.env.ASTRA_DB_KEYSPACE;
-    const collection = "test";
+    const collection = "test_" + Math.random().toString(36).replace(/[^a-z]+/g, '');
     const documentId = faker.random.alphaNumeric(8);
 
     before(async () => {

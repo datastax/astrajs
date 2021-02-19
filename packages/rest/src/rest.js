@@ -98,7 +98,7 @@ const axiosRequest = async (options) => {
   try {
     const authHeader = {};
     if (options.applicationToken) {
-      authHeader["X-Application-Token"] = options.applicationToken;
+      authHeader["X-Cassandra-Token"] = options.applicationToken;
     } else {
       authHeader["X-Cassandra-Token"] = options.authToken
         ? options.authToken

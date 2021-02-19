@@ -4,7 +4,7 @@ on:
     branches:
       - master
   schedule:
-    - cron: "0 * * * *"
+    - cron: "0 0 * * *"
 jobs:
   tests:
     env:
@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     services:
       stargate:
-        image: stargateio/stargate-dse-68:v1.0.0
+        image: stargateio/stargate-dse-68:v1.0.7
         env:
           CLUSTER_NAME: stargate
           CLUSTER_VERSION: 6.8

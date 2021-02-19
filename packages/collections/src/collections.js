@@ -1,6 +1,7 @@
 "use strict";
 
 const astraRest = require("@astrajs/rest");
+const _ = require("lodash");
 
 const DEFAULT_PAGE_SIZE = 20;
 const DEFAULT_BASE_PATH = "/api/rest/v2/namespaces";
@@ -93,7 +94,7 @@ class AstraCollection {
   }
 
   async create(path, document) {
-    if (typeof path === "string") {
+    if (!_.isPlainObject(path)) {
       return this._put(path, document);
     }
     const response = await this.restClient.post(`${this.basePath}`, path);

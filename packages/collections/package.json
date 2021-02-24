@@ -3,7 +3,7 @@
   "version": "0.0.11",
   "description": "DataStax Astra's NodeJS collections client",
   "author": "CRW <chris.wilhite@datastax.com>",
-  "homepage": "https://github.com/kidrecursive/astrajs#readme",
+  "homepage": "https://github.com/datastax/astrajs#readme",
   "license": "Apache-2.0",
   "main": "src/collections.js",
   "mocha": {
@@ -21,13 +21,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kidrecursive/astrajs.git"
+    "url": "git+https://github.com/datastax/astrajs.git"
   },
   "scripts": {
     "test": "mocha src/collections.test.js"
   },
   "bugs": {
-    "url": "https://github.com/kidrecursive/astrajs/issues"
+    "url": "https://github.com/datastax/astrajs/issues"
   },
   "devDependencies": {
     "dotenv": "^8.2.0",

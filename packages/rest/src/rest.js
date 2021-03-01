@@ -26,6 +26,7 @@ const HTTP_METHODS = {
  * @param {string} [options.baseUrl] The url of your Astra/Stargate REST instance
  * @param {string} [options.authUrl] A separate auth URL for Stargate
  * @param {string} [options.authToken] A valid stargate/Asta auth token
+ * @param {string} options.applicationToken A valid Asta application token
  * @param {string} [options.autoReconnect] Reconnect using the provided credentials
  * @param {Function} [options.getAuthToken] A function that returns a promise which returns a valid authToken, for reading tokens from shared storage
  * @param {Function} [options.setAuthToken] A function that returns a promise which takes an authToken, for writing tokens to shared storage
@@ -50,25 +51,31 @@ const createClient = async (options) => {
     throw new Error("@astrajs/rest: baseUrl required for initialization");
   }
 
-  // provision an auth token from Astra, Stargate, or user provided storage
+  // provision an auth token from Astra, Stargate, or user provided storage, or use
+  // a provided application token
   let authToken = null;
-  if (options.authToken) {
-    authToken = options.authToken;
-  } else if (options.getAuthToken) {
-    authToken = await options.getAuthToken();
-  } else {
-    const response = await axiosRequest({
-      url: options.authUrl ? options.authUrl : baseUrl + DEFAULT_AUTH_PATH,
-      method: HTTP_METHODS.post,
-      data: {
-        username: options.username,
-        password: options.password,
-      },
-    });
-    authToken = response.data.authToken;
+  if (!options.applicationToken) {
+    if (options.authToken) {
+      authToken = options.authToken;
+    } else if (options.getAuthToken) {
+      authToken = await options.getAuthToken();
+    } else {
+      const response = await axiosRequest({
+        url: options.authUrl ? options.authUrl : baseUrl + DEFAULT_AUTH_PATH,
+        method: HTTP_METHODS.post,
+        data: {
+          username: options.username,
+          password: options.password,
+        },
+      });
+      authToken = response.data.authToken;
+    }
   }
-  if (!authToken) {
-    throw new Error("@astrajs/rest: authToken required for initialization");
+
+  if (!authToken && !options.applicationToken) {
+    throw new Error(
+      "@astrajs/rest: authToken or applicationToken required for initialization"
+    );
   }
 
   // setup detailed request logging if the user desires it
@@ -89,6 +96,15 @@ const createClient = async (options) => {
 
 const axiosRequest = async (options) => {
   try {
+    const authHeader = {};
+    if (options.applicationToken) {
+      authHeader["X-Cassandra-Token"] = options.applicationToken;
+    } else {
+      authHeader["X-Cassandra-Token"] = options.authToken
+        ? options.authToken
+        : "";
+    }
+
     const response = await axios({
       url: options.url,
       data: options.data,
@@ -99,7 +115,7 @@ const axiosRequest = async (options) => {
         Accepts: "application/json",
         "Content-Type": "application/json",
         "X-Requested-With": REQUESTED_WITH,
-        "X-Cassandra-Token": options.authToken ? options.authToken : "",
+        ...authHeader,
       },
     });
     return {
@@ -128,6 +144,7 @@ class AstraClient {
    * @param {Object} options A set of AstraJS REST connection options
    * @param {string} options.baseUrl The url of your database
    * @param {string} options.authToken A valid stargate/Asta auth token
+   * @param {string} options.applicationToken A valid Asta application token
    * @param {string} options.username Reconnect using the provided credentials
    * @param {string} options.password Reconnect using the provided credentials
    * @param {string} [options.autoReconnect] Reconnect using the provided credentials
@@ -139,6 +156,7 @@ class AstraClient {
     this.baseUrl = options.baseUrl;
     this.baseApiPath = options.baseApiPath;
     this.authToken = options.authToken;
+    this.applicationToken = options.applicationToken;
     this.authUrl = options.authUrl;
     this.autoReconnect = options.autoReconnect ? options.autoReconnect : true;
     this.getAuthToken = options.getAuthToken;
@@ -181,8 +199,13 @@ class AstraClient {
     const response = await axiosRequest({
       ...options,
       authToken: this.authToken,
+      applicationToken: this.applicationToken,
     });
-    if (response.status === 401 && this.autoReconnect) {
+    if (
+      response.status === 401 &&
+      this.autoReconnect &&
+      !this.applicationToken
+    ) {
       console.log("@astrajs/rest: reconnecting");
       await this._connect();
       return await axiosRequest(options);

@@ -1,9 +1,9 @@
 {
   "name": "@astrajs/rest",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "description": "DataStax Astra's NodeJS REST client",
   "author": "CRW <chris.wilhite@datastax.com>",
-  "homepage": "https://github.com/kidrecursive/astrajs#readme",
+  "homepage": "https://github.com/datastax/astrajs",
   "license": "Apache-2.0",
   "main": "src/rest.js",
   "mocha": {
@@ -21,13 +21,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kidrecursive/astrajs.git"
+    "url": "git+https://github.com/datastax/astrajs.git"
   },
   "scripts": {
     "test": "mocha src/rest.test.js"
   },
   "bugs": {
-    "url": "https://github.com/kidrecursive/astrajs/issues"
+    "url": "https://github.com/datastax/astrajs/issues"
   },
   "dependencies": {
     "axios": "^0.21.1",

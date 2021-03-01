@@ -8,11 +8,10 @@ on:
 jobs:
   tests:
     env:
-      ASTRA_DB_USERNAME: ${{ secrets.ASTRA_DB_USERNAME }}
-      ASTRA_DB_PASSWORD: ${{ secrets.ASTRA_DB_PASSWORD }}
       ASTRA_DB_KEYSPACE: ${{ secrets.ASTRA_DB_KEYSPACE }}
       ASTRA_DB_ID: ${{ secrets.ASTRA_DB_ID }}
       ASTRA_DB_REGION: ${{ secrets.ASTRA_DB_REGION }}
+      ASTRA_DB_APPLICATION_TOKEN: ${{ secrets.ASTRA_DB_APPLICATION_TOKEN }}
       STARGATE_BASE_URL: ${{ secrets.STARGATE_BASE_URL }}
       STARGATE_AUTH_URL: ${{ secrets.STARGATE_AUTH_URL }}
       STARGATE_USERNAME: ${{ secrets.STARGATE_USERNAME }}
@@ -20,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     services:
       stargate:
-        image: stargateio/stargate-dse-68:v1.0.7
+        image: stargateio/stargate-dse-68:v1.0.11
         env:
           CLUSTER_NAME: stargate
           CLUSTER_VERSION: 6.8

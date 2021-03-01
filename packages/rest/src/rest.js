@@ -199,6 +199,7 @@ class AstraClient {
     const response = await axiosRequest({
       ...options,
       authToken: this.authToken,
+      applicationToken: this.applicationToken,
     });
     if (
       response.status === 401 &&

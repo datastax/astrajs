@@ -15,8 +15,7 @@ describe("AstraJS REST", () => {
       const astraClient = await astraRest.createClient({
         astraDatabaseId: process.env.ASTRA_DB_ID,
         astraDatabaseRegion: process.env.ASTRA_DB_REGION,
-        username: process.env.ASTRA_DB_USERNAME,
-        password: process.env.ASTRA_DB_PASSWORD,
+        applicationToken: process.env.ASTRA_DB_APPLICATION_TOKEN,
       });
 
       assert.notEqual(astraClient, null);
@@ -49,8 +48,7 @@ describe("AstraJS REST", () => {
       astraClient = await astraRest.createClient({
         astraDatabaseId: process.env.ASTRA_DB_ID,
         astraDatabaseRegion: process.env.ASTRA_DB_REGION,
-        username: process.env.ASTRA_DB_USERNAME,
-        password: process.env.ASTRA_DB_PASSWORD,
+        applicationToken: process.env.ASTRA_DB_APPLICATION_TOKEN,
       });
     });
 

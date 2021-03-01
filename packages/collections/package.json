@@ -1,6 +1,6 @@
 {
   "name": "@astrajs/collections",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "description": "DataStax Astra's NodeJS collections client",
   "author": "CRW <chris.wilhite@datastax.com>",
   "homepage": "https://github.com/datastax/astrajs#readme",
@@ -35,7 +35,7 @@
     "mocha": "^8.2.1"
   },
   "dependencies": {
-    "@astrajs/rest": "^0.0.11",
+    "@astrajs/rest": "^0.0.12",
     "lodash": "^4.17.20"
   }
 }

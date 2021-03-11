@@ -32,7 +32,8 @@
   "dependencies": {
     "assert": "^2.0.0",
     "axios": "^0.21.1",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "tunnel": "^0.0.6"
   },
   "devDependencies": {
     "dotenv": "^8.2.0",

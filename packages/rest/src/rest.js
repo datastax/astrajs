@@ -4,6 +4,17 @@ const axios = require("axios");
 const _ = require("lodash");
 const ConfigParser = require('configparser');
 const { forEach } = require("lodash");
+const tunnel = require('tunnel');
+
+/** Section to activate when using fiddler to debug
+const agent = tunnel.httpsOverHttp({
+  proxy: {
+     host: '127.0.0.1',
+     port: 8866
+   },
+   rejectUnauthorized: false
+ });
+*/
 
 const REQUESTED_WITH = "@astrajs/rest";
 const DEFAULT_AUTH_PATH = "/api/rest/v1/auth";
@@ -127,6 +138,8 @@ const axiosRequest = async (options) => {
         : "";
     }
 
+    axios.defaults.headers.common['User-Agent'] += '@astrajs'
+
     const response = await axios({
       url: options.url,
       data: options.data,
@@ -136,10 +149,12 @@ const axiosRequest = async (options) => {
       headers: {
         Accepts: "application/json",
         "Content-Type": "application/json",
+        "User-Agent" : "@astrajs 0.0.1",
         "X-Requested-With": REQUESTED_WITH,
         ...authHeader,
-      },
-    });
+      }
+      });
+      
     return {
       status: response.status,
       data: response.data.data ? response.data.data : response.data,
@@ -209,6 +224,7 @@ class AstraClient {
 
   async _connect() {
     const response = await axiosRequest({
+      
       url: this.authUrl ? this.authUrl : this.baseUrl + DEFAULT_AUTH_PATH,
       method: HTTP_METHODS.post,
       data: {
@@ -249,6 +265,7 @@ class AstraClient {
   async get(path, options) {
     return await this._request({
       url: this.baseUrl + path,
+      
       method: HTTP_METHODS.get,
       ...options,
     });

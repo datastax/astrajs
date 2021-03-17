@@ -60,16 +60,17 @@ const createClient = async (options) => {
     const config = new ConfigParser();
     const configSection = options.configSection || "default";
     config.read(options.configFile);
-    const envToFlag = { ASTRA_DB_ID: "astraDatabaseId",
-                  ASTRA_DB_REGION:"astraDatabaseRegion",
-                  ASTRA_DB_APPLICATION_TOKEN:"applicationToken" }
-                  Object.keys(envToFlag).forEach (env => {
-                     let option = envToFlag[env];
-                     if (!options[option] && config.get(configSection, env) != undefined) {
-                       options[option] = config.get(configSection, env)
-                     }
-                    }
-                   )
+    const envToFlag = {
+      ASTRA_DB_ID: "astraDatabaseId",
+      ASTRA_DB_REGION: "astraDatabaseRegion",
+      ASTRA_DB_APPLICATION_TOKEN: "applicationToken",
+    };
+    Object.keys(envToFlag).forEach((env) => {
+      let option = envToFlag[env];
+      if (!options[option] && config.get(configSection, env) != undefined) {
+        options[option] = config.get(configSection, env);
+      }
+    });
   }
 
   // set the baseURL to Astra, if the user provides a Stargate URL, use that instead.

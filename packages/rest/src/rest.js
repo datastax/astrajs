@@ -2,9 +2,9 @@
 
 const axios = require("axios");
 const _ = require("lodash");
-const ConfigParser = require('configparser');
+const ConfigParser = require("configparser");
 const { forEach } = require("lodash");
-const tunnel = require('tunnel');
+const tunnel = require("tunnel");
 
 /** Section to activate when using fiddler to debug
 const agent = tunnel.httpsOverHttp({
@@ -34,7 +34,7 @@ const HTTP_METHODS = {
  * @param {Object} options A set of AstraJS REST connection options
  * @param {string} options.configFile An ini-style configuration file to read options from.
  * @param {string} options.configSection The section from the config file to use
- * @param {string} options.configUpdate Whether to write new values to the correct file/section 
+ * @param {string} options.configUpdate Whether to write new values to the correct file/section
  * @param {string} options.astraDatabaseId The database id of your Astra database
  * @param {string} options.astraDatabaseRegion The region of your Astra database
  * @param {string} options.username Reconnect using the provided credentials
@@ -139,7 +139,7 @@ const axiosRequest = async (options) => {
         : "";
     }
 
-    axios.defaults.headers.common['User-Agent'] += '@astrajs'
+    axios.defaults.headers.common["User-Agent"] += "@astrajs";
 
     const response = await axios({
       url: options.url,
@@ -150,12 +150,12 @@ const axiosRequest = async (options) => {
       headers: {
         Accepts: "application/json",
         "Content-Type": "application/json",
-        "User-Agent" : "@astrajs 0.0.1",
+        "User-Agent": "@astrajs 0.0.1",
         "X-Requested-With": REQUESTED_WITH,
         ...authHeader,
-      }
-      });
-      
+      },
+    });
+
     return {
       status: response.status,
       data: response.data.data ? response.data.data : response.data,
@@ -225,7 +225,6 @@ class AstraClient {
 
   async _connect() {
     const response = await axiosRequest({
-      
       url: this.authUrl ? this.authUrl : this.baseUrl + DEFAULT_AUTH_PATH,
       method: HTTP_METHODS.post,
       data: {
@@ -266,7 +265,7 @@ class AstraClient {
   async get(path, options) {
     return await this._request({
       url: this.baseUrl + path,
-      
+
       method: HTTP_METHODS.get,
       ...options,
     });

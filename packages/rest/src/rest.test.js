@@ -5,6 +5,8 @@ const axios = require("axios");
 const faker = require("faker");
 const astraRest = require("./rest");
 const _ = require("lodash");
+const ConfigParser = require("configparser");
+const fs = require("fs");
 
 // setup envars
 require("dotenv").config();
@@ -16,6 +18,26 @@ describe("AstraJS REST", () => {
         astraDatabaseId: process.env.ASTRA_DB_ID,
         astraDatabaseRegion: process.env.ASTRA_DB_REGION,
         applicationToken: process.env.ASTRA_DB_APPLICATION_TOKEN,
+      });
+      assert.notEqual(astraClient, null);
+    });
+  });
+
+  describe("AstraJS REST Client - ConfigFile", () => {
+    it("should initialize an AstraDB REST Client", async () => {
+      const config = new ConfigParser();
+      config.addSection("default");
+      ["ASTRA_DB_ID", "ASTRA_DB_APPLICATION_TOKEN", "ASTRA_DB_REGION"].forEach(
+        (envvar) => {
+          if (envvar in process.env) {
+            config.set("default", envvar, process.env[envvar]);
+          }
+        }
+      );
+      config.write("/tmp/.astratestrc");
+
+      const astraClient = await astraRest.createClient({
+        configFile: "/tmp/.astratestrc",
       });
 
       assert.notEqual(astraClient, null);
@@ -46,9 +68,7 @@ describe("AstraJS REST", () => {
 
     before(async () => {
       astraClient = await astraRest.createClient({
-        astraDatabaseId: process.env.ASTRA_DB_ID,
-        astraDatabaseRegion: process.env.ASTRA_DB_REGION,
-        applicationToken: process.env.ASTRA_DB_APPLICATION_TOKEN,
+        configFile: "/tmp/.astratestrc",
       });
     });
 

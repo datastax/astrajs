@@ -2,6 +2,19 @@
 
 const axios = require("axios");
 const _ = require("lodash");
+const ConfigParser = require('configparser');
+const { forEach } = require("lodash");
+const tunnel = require('tunnel');
+
+/** Section to activate when using fiddler to debug
+const agent = tunnel.httpsOverHttp({
+  proxy: {
+     host: '127.0.0.1',
+     port: 8866
+   },
+   rejectUnauthorized: false
+ });
+*/
 
 const REQUESTED_WITH = "@astrajs/rest";
 const DEFAULT_AUTH_PATH = "/api/rest/v1/auth";
@@ -19,6 +32,9 @@ const HTTP_METHODS = {
  * Configure an AstraClient to connect to Astra
  *
  * @param {Object} options A set of AstraJS REST connection options
+ * @param {string} options.configFile An ini-style configuration file to read options from.
+ * @param {string} options.configSection The section from the config file to use
+ * @param {string} options.configUpdate Whether to write new values to the correct file/section 
  * @param {string} options.astraDatabaseId The database id of your Astra database
  * @param {string} options.astraDatabaseRegion The region of your Astra database
  * @param {string} options.username Reconnect using the provided credentials
@@ -37,6 +53,24 @@ const createClient = async (options) => {
   // for now, we do not support usage in browsers
   if (typeof window !== "undefined") {
     throw new Error("@astrajs/rest: not for use in a web browser");
+  }
+
+  // Check to see if a config file was passed in
+  if (options.configFile) {
+    const config = new ConfigParser();
+    const configSection = options.configSection || "default";
+    config.read(options.configFile);
+    const envToFlag = {
+      ASTRA_DB_ID: "astraDatabaseId",
+      ASTRA_DB_REGION: "astraDatabaseRegion",
+      ASTRA_DB_APPLICATION_TOKEN: "applicationToken",
+    };
+    Object.keys(envToFlag).forEach((env) => {
+      let option = envToFlag[env];
+      if (!options[option] && config.get(configSection, env) != undefined) {
+        options[option] = config.get(configSection, env);
+      }
+    });
   }
 
   // set the baseURL to Astra, if the user provides a Stargate URL, use that instead.
@@ -105,6 +139,8 @@ const axiosRequest = async (options) => {
         : "";
     }
 
+    axios.defaults.headers.common['User-Agent'] += '@astrajs'
+
     const response = await axios({
       url: options.url,
       data: options.data,
@@ -114,10 +150,12 @@ const axiosRequest = async (options) => {
       headers: {
         Accepts: "application/json",
         "Content-Type": "application/json",
+        "User-Agent" : "@astrajs 0.0.1",
         "X-Requested-With": REQUESTED_WITH,
         ...authHeader,
-      },
-    });
+      }
+      });
+      
     return {
       status: response.status,
       data: response.data.data ? response.data.data : response.data,
@@ -143,8 +181,8 @@ class AstraClient {
   /**
    * @param {Object} options A set of AstraJS REST connection options
    * @param {string} options.baseUrl The url of your database
-   * @param {string} options.authToken A valid stargate/Asta auth token
-   * @param {string} options.applicationToken A valid Asta application token
+   * @param {string} options.authToken A valid stargate/Astra auth token
+   * @param {string} options.applicationToken A valid Astra application token
    * @param {string} options.username Reconnect using the provided credentials
    * @param {string} options.password Reconnect using the provided credentials
    * @param {string} [options.autoReconnect] Reconnect using the provided credentials
@@ -154,6 +192,8 @@ class AstraClient {
    */
   constructor(options) {
     this.baseUrl = options.baseUrl;
+    this.configFile = options.configFile;
+    this.configSection = options.configSection || "default";
     this.baseApiPath = options.baseApiPath;
     this.authToken = options.authToken;
     this.applicationToken = options.applicationToken;
@@ -185,6 +225,7 @@ class AstraClient {
 
   async _connect() {
     const response = await axiosRequest({
+      
       url: this.authUrl ? this.authUrl : this.baseUrl + DEFAULT_AUTH_PATH,
       method: HTTP_METHODS.post,
       data: {
@@ -225,6 +266,7 @@ class AstraClient {
   async get(path, options) {
     return await this._request({
       url: this.baseUrl + path,
+      
       method: HTTP_METHODS.get,
       ...options,
     });

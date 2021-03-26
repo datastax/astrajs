@@ -1,7 +1,7 @@
 {
   "name": "astrajs",
   "private": true,
-  "devDependencies": {
-    "lerna": "^3.22.1"
+  "dependencies": {
+    "configparser": "^0.3.9"
   }
 }

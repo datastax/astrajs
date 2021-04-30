@@ -1,6 +1,6 @@
 ## @astrajs
 
-[![Actions Status](https://github.com/datastax/astrajs/workflows/Tests/badge.svg)](https://github.com/kidrecursive/astrajs/actions) 
+[![Actions Status](https://github.com/datastax/astrajs/workflows/Tests/badge.svg)](https://github.com/datastax/astrajs/actions) 
 
 @astrajs is a monorepo containing tools for interacting with [DataStax Astra](https://astra.datastax.com) and [Stargate](https://stargate.io/)
 

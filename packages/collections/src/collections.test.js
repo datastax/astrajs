@@ -129,13 +129,15 @@ describe("AstraJS", () => {
     });
 
     it("should delete a subdocument", async () => {
-      await testCollection.delete(`${documentId}/addresses`);
+      const res = await testCollection.delete(`${documentId}/addresses`);
+      assert.equal(res.documentId, `${documentId}/addresses`);
       const document = await testCollection.get(`${documentId}/addresses`);
       assert.equal(document, null);
     });
 
     it("should delete a document", async () => {
-      await testCollection.delete(documentId);
+      const res = await testCollection.delete(documentId);
+      assert.equal(res.documentId, documentId);
       const document = await testCollection.get(documentId);
       assert.equal(document, null);
     });
@@ -277,13 +279,15 @@ describe("AstraJS", () => {
     });
 
     it("should delete a subdocument", async () => {
-      await testCollection.delete(`${documentId}/addresses`);
+      const res = await testCollection.delete(`${documentId}/addresses`);
+      assert.equal(res.documentId, `${documentId}/addresses`);
       const document = await testCollection.get(`${documentId}/addresses`);
       assert.equal(document, null);
     });
 
     it("should delete a document", async () => {
-      await testCollection.delete(documentId);
+      const res = await testCollection.delete(documentId);
+      assert.equal(res.documentId, documentId);
       const document = await testCollection.get(documentId);
       assert.equal(document, null);
     });

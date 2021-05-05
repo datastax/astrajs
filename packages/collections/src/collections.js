@@ -136,7 +136,7 @@ class AstraCollection {
   async delete(path) {
     const response = await this.restClient.delete(`${this.basePath}/${path}`);
     if (response.status === 204) {
-      return response.data;
+      return { documentId: path, deleted: true };
     }
     return null;
   }

@@ -1,6 +1,6 @@
 {
   "name": "@astrajs/setupdb",
-  "version": "0.0.14",
+  "version": "0.1.0",
   "description": "Netlify Build plugin - This plugin connects your netlify instance to an Astra database backend, including a managed Cassandra database and HTTP APIs through Stargate.",
   "author": "synedra <kirsten.hunter@datastax.com>",
   "homepage": "https://github.com/datastax/astrajs#readme",
@@ -29,7 +29,7 @@
     "node": ">=12.18.0"
   },
   "dependencies": {
-    "@astrajs/rest": "^0.0.14",
+    "@astrajs/rest": "^0.1.0",
     "chalk": "^4.1.1",
     "configparser": "^0.3.9",
     "dotenv": "^8.2.0",

@@ -36,9 +36,6 @@ class AstraClient {
 
     // setup a Schemas connection
     // this.schemas =
-
-    // setup an IAM connection
-    // this.iam =
   }
 }
 

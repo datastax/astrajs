@@ -1,0 +1,41 @@
+{
+  "name": "@astrajs/client",
+  "version": "0.0.14",
+  "description": "DataStax Astra's NodeJS REST client",
+  "author": "CRW <chris.wilhite@datastax.com>",
+  "homepage": "https://github.com/datastax/astrajs",
+  "license": "Apache-2.0",
+  "main": "src/client.js",
+  "mocha": {
+    "timeout": 30000
+  },
+  "directories": {
+    "lib": "src",
+    "test": "src"
+  },
+  "files": [
+    "src"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/datastax/astrajs.git"
+  },
+  "scripts": {
+    "test": "mocha src/rest.test.js"
+  },
+  "bugs": {
+    "url": "https://github.com/datastax/astrajs/issues"
+  },
+  "dependencies": {
+    "@astrajs/collections": "^0.0.14",
+    "@astrajs/rest": "^0.0.14"
+  },
+  "devDependencies": {
+    "dotenv": "^8.2.0",
+    "faker": "^5.4.0",
+    "mocha": "^8.3.0"
+  }
+}

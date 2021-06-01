@@ -1,4 +1,4 @@
-## @astrajs/rest
+## @astrajs/client
 
 [![Actions Status](https://github.com/datastax/astrajs/workflows/Tests/badge.svg)](https://github.com/datastax/astrajs/actions) 
 
@@ -7,10 +7,6 @@ Connect your NodeJS app to your [DataStax Astra Database](https://astra.datastax
 ### Resources
 - [DataStax Astra](https://astra.datastax.com)
 - [Stargate REST API documentation](https://stargate.io/)
-- [Quickstart](https://docs.astra.datastax.com/docs/astra-rest-client)
-
-### Quickstart
-Head on over to our official docs to get started: [https://docs.astra.datastax.com/docs/astra-rest-client](https://docs.astra.datastax.com/docs/astra-rest-client)
 
 ### Testing locally with Stargate
 Start up a local instance of Stargate before running tests:

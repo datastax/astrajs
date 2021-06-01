@@ -18,5 +18,5 @@ docker run --name stargate \
   -e CLUSTER_VERSION=6.8 \
   -e DEVELOPER_MODE=true \
   -e DSE=1 \
-  stargateio/stargate-dse-68:v1.0.23
+  stargateio/stargate-dse-68:v1.0.25
 ``

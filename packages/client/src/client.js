@@ -16,32 +16,24 @@
 
 const astraCollections = require("@astrajs/collections");
 const { AstraGraphQL } = require("./graphql");
+const { AstraRest } = require("./rest");
+const { AstraOps } = require("./ops");
+const { AstraSchemas } = require("./schemas");
 
 class AstraClient {
-  constructor(collections, options) {
-    // create a collections client
+  constructor(collections) {
     this.collections = collections;
-
-    // get a reference to the underlying REST client
     this._restClient = collections.restClient;
-
-    // setup an Apollo connection
     this.graphql = new AstraGraphQL(this._restClient);
-
-    // setup a REST connection
-    // this.rest =
-
-    // setup a Devops connection
-    // this.devops =
-
-    // setup a Schemas connection
-    // this.schemas =
+    this.rest = new AstraRest(this._restClient);
+    this.ops = new AstraOps(this._restClient);
+    this.schemas = new AstraSchemas(this._restClient);
   }
 }
 
 const createAstraClient = async (options) => {
   const collections = await astraCollections.createClient(options);
-  return new AstraClient(collections, options);
+  return new AstraClient(collections);
 };
 
 module.exports = { AstraClient, createAstraClient };

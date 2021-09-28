@@ -10,5 +10,6 @@
 
 
 ### Packages
+- [Astra Client](https://github.com/datastax/astrajs/tree/master/packages/client) - Connect your app to Astra or Stargate using a JavaScript interface.
 - [Astra REST](https://github.com/datastax/astrajs/tree/master/packages/rest) - Connect your app to Astra or Stargate using a REST interface.
 - [Astra Collections](https://github.com/datastax/astrajs/tree/master/packages/collections) - Connect your app to Astra or Stargate using the Document SDK 

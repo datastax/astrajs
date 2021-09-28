@@ -1,6 +1,6 @@
 {
   "name": "@astrajs/collections",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "DataStax Astra's NodeJS collections client",
   "author": "CRW <chris.wilhite@datastax.com>",
   "homepage": "https://github.com/datastax/astrajs#readme",
@@ -24,7 +24,7 @@
     "url": "git+https://github.com/datastax/astrajs.git"
   },
   "scripts": {
-    "test": "mocha src/collections.test.js"
+    "test": "nyc mocha src/collections.test.js"
   },
   "bugs": {
     "url": "https://github.com/datastax/astrajs/issues"
@@ -32,10 +32,11 @@
   "devDependencies": {
     "dotenv": "^8.2.0",
     "faker": "^5.3.1",
-    "mocha": "^8.2.1"
+    "mocha": "^8.2.1",
+    "nyc": "^15.1.0"
   },
   "dependencies": {
-    "@astrajs/rest": "^0.0.12",
+    "@astrajs/rest": "^0.1.1",
     "lodash": "^4.17.20"
   }
 }

@@ -14,11 +14,17 @@
 
 "use strict";
 
+const _ = require("lodash");
 const PATH_PREFIX = "/v2";
+const DEFAULT_HOST = "https://api.astra.datastax.com";
 
 class AstraOps {
   constructor(client) {
-    this.client = client;
+    const newClient = _.cloneDeep(client);
+    newClient.baseUrl = DEFAULT_HOST;
+    newClient.authHeaderName = "Authorization";
+    newClient.applicationToken = `Bearer ${client.applicationToken}`;
+    this.client = newClient;
   }
 
   async getDatabases() {

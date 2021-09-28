@@ -70,7 +70,7 @@ describe("AstraJS", () => {
       });
 
       const document = await testCollection.get(documentId);
-      assert.equal(document.firstName, "Cliff");
+      assert.strictEqual(document.firstName, "Cliff");
     });
 
     it("should create a subdocument", async () => {
@@ -82,7 +82,8 @@ describe("AstraJS", () => {
       });
 
       const document = await testCollection.get(`${documentId}/addresses`);
-      assert.equal(document.home.state, "NY");
+      assert.strictEqual(document.home.state, "NY");
+      assert.strictEqual(document.home.city, "New York");
     });
 
     it("should create a document without an ID", async () => {
@@ -91,7 +92,7 @@ describe("AstraJS", () => {
         lastName: "Guy",
       });
       const document = await testCollection.get(res.documentId);
-      assert.equal(document.firstName, "New");
+      assert.strictEqual(document.firstName, "New");
     });
 
     it("should udpate a document", async () => {
@@ -100,7 +101,7 @@ describe("AstraJS", () => {
       });
 
       const document = await testCollection.get(documentId);
-      assert.equal(document.firstName, "Dang");
+      assert.strictEqual(document.firstName, "Dang");
     });
 
     it("should udpate a subdocument", async () => {
@@ -109,7 +110,7 @@ describe("AstraJS", () => {
       });
 
       const document = await testCollection.get(`${documentId}/addresses/home`);
-      assert.equal(document.city, "Buffalo");
+      assert.strictEqual(document.city, "Buffalo");
     });
 
     it("should replace a subdocument", async () => {
@@ -121,25 +122,26 @@ describe("AstraJS", () => {
       });
 
       const document = await testCollection.get(`${documentId}/addresses/work`);
-      assert.equal(document.state, "NY");
+      assert.strictEqual(document.state, "NY");
       const document2 = await testCollection.get(
         `${documentId}/addresses/home`
       );
-      assert.equal(document2, null);
+      console.log(document2);
+      assert.strictEqual(document2, null);
     });
 
     it("should delete a subdocument", async () => {
       const res = await testCollection.delete(`${documentId}/addresses`);
-      assert.equal(res.documentId, `${documentId}/addresses`);
+      assert.strictEqual(res.documentId, `${documentId}/addresses`);
       const document = await testCollection.get(`${documentId}/addresses`);
-      assert.equal(document, null);
+      assert.strictEqual(document, null);
     });
 
     it("should delete a document", async () => {
       const res = await testCollection.delete(documentId);
-      assert.equal(res.documentId, documentId);
+      assert.strictEqual(res.documentId, documentId);
       const document = await testCollection.get(documentId);
-      assert.equal(document, null);
+      assert.strictEqual(document, null);
     });
 
     it("should find documents", async () => {
@@ -158,9 +160,9 @@ describe("AstraJS", () => {
       const documents = await testCollection.find({
         firstName: { $eq: `Cliff-${userId}` },
       });
-      assert.equal(Object.keys(documents).length, 2);
-      assert.equal(documents[userId].lastName, "Wicklow");
-      assert.equal(documents[userId2].lastName, "Danger");
+      assert.strictEqual(Object.keys(documents).length, 2);
+      assert.strictEqual(documents[userId].lastName, "Wicklow");
+      assert.strictEqual(documents[userId2].lastName, "Danger");
     });
 
     it("should find a single document", async () => {
@@ -179,7 +181,12 @@ describe("AstraJS", () => {
       const document = await testCollection.findOne({
         firstName: { $eq: `Cliff-${userId}` },
       });
-      assert.equal(document.firstName, `Cliff-${userId}`);
+      assert.strictEqual(document.firstName, `Cliff-${userId}`);
+
+      const document2 = await testCollection.findOne({
+        firstName: { $eq: `Cliff-wew` },
+      });
+      assert.strictEqual(document2, null);
     });
   });
 
@@ -220,7 +227,7 @@ describe("AstraJS", () => {
       });
 
       const document = await testCollection.get(documentId);
-      assert.equal(document.firstName, "Cliff");
+      assert.strictEqual(document.firstName, "Cliff");
     });
 
     it("should create a subdocument", async () => {
@@ -232,7 +239,7 @@ describe("AstraJS", () => {
       });
 
       const document = await testCollection.get(`${documentId}/addresses`);
-      assert.equal(document.home.state, "NY");
+      assert.strictEqual(document.home.state, "NY");
     });
 
     it("should create a document without an ID", async () => {
@@ -241,7 +248,7 @@ describe("AstraJS", () => {
         lastName: "Guy",
       });
       const document = await testCollection.get(res.documentId);
-      assert.equal(document.firstName, "New");
+      assert.strictEqual(document.firstName, "New");
     });
 
     it("should udpate a document", async () => {
@@ -250,7 +257,7 @@ describe("AstraJS", () => {
       });
 
       const document = await testCollection.get(documentId);
-      assert.equal(document.firstName, "Dang");
+      assert.strictEqual(document.firstName, "Dang");
     });
 
     it("should udpate a subdocument", async () => {
@@ -259,7 +266,7 @@ describe("AstraJS", () => {
       });
 
       const document = await testCollection.get(`${documentId}/addresses/home`);
-      assert.equal(document.city, "Buffalo");
+      assert.strictEqual(document.city, "Buffalo");
     });
 
     it("should replace a subdocument", async () => {
@@ -271,25 +278,25 @@ describe("AstraJS", () => {
       });
 
       const document = await testCollection.get(`${documentId}/addresses/work`);
-      assert.equal(document.state, "NY");
+      assert.strictEqual(document.state, "NY");
       const document2 = await testCollection.get(
         `${documentId}/addresses/home`
       );
-      assert.equal(document2, null);
+      assert.strictEqual(document2, null);
     });
 
     it("should delete a subdocument", async () => {
       const res = await testCollection.delete(`${documentId}/addresses`);
-      assert.equal(res.documentId, `${documentId}/addresses`);
+      assert.strictEqual(res.documentId, `${documentId}/addresses`);
       const document = await testCollection.get(`${documentId}/addresses`);
-      assert.equal(document, null);
+      assert.strictEqual(document, null);
     });
 
     it("should delete a document", async () => {
       const res = await testCollection.delete(documentId);
-      assert.equal(res.documentId, documentId);
+      assert.strictEqual(res.documentId, documentId);
       const document = await testCollection.get(documentId);
-      assert.equal(document, null);
+      assert.strictEqual(document, null);
     });
 
     it("should find documents", async () => {
@@ -308,9 +315,9 @@ describe("AstraJS", () => {
       const documents = await testCollection.find({
         firstName: { $eq: `Cliff-${userId}` },
       });
-      assert.equal(Object.keys(documents).length, 2);
-      assert.equal(documents[userId].lastName, "Wicklow");
-      assert.equal(documents[userId2].lastName, "Danger");
+      assert.strictEqual(Object.keys(documents).length, 2);
+      assert.strictEqual(documents[userId].lastName, "Wicklow");
+      assert.strictEqual(documents[userId2].lastName, "Danger");
     });
 
     it("should find a single document", async () => {
@@ -329,7 +336,7 @@ describe("AstraJS", () => {
       const document = await testCollection.findOne({
         firstName: { $eq: `Cliff-${userId}` },
       });
-      assert.equal(document.firstName, `Cliff-${userId}`);
+      assert.strictEqual(document.firstName, `Cliff-${userId}`);
     });
   });
 });

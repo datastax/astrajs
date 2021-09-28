@@ -15,12 +15,9 @@
 "use strict";
 
 const assert = require("assert");
-const axios = require("axios");
 const faker = require("faker");
 const astraRest = require("./rest");
-const _ = require("lodash");
 const ConfigParser = require("configparser");
-const fs = require("fs");
 
 // setup envars
 require("dotenv").config();
@@ -33,7 +30,70 @@ describe("AstraJS REST", () => {
         astraDatabaseRegion: process.env.ASTRA_DB_REGION,
         applicationToken: process.env.ASTRA_DB_APPLICATION_TOKEN,
       });
-      assert.notEqual(astraClient, null);
+      assert.notStrictEqual(astraClient, null);
+    });
+
+    it("should not initialize without a baseurl", async () => {
+      let astraClient = null;
+      try {
+        astraClient = await astraRest.createClient({
+          astraDatabaseId: process.env.ASTRA_DB_ID,
+          applicationToken: process.env.ASTRA_DB_APPLICATION_TOKEN,
+        });
+        assert.strictEqual(true, false);
+      } catch (e) {
+        assert.strictEqual(astraClient, null);
+      }
+    });
+
+    it("should not initialize an AstraDB REST Client in a window", async () => {
+      global.window = true;
+      let astraClient = null;
+      try {
+        astraClient = await astraRest.createClient({
+          astraDatabaseId: process.env.ASTRA_DB_ID,
+          astraDatabaseRegion: process.env.ASTRA_DB_REGION,
+          applicationToken: process.env.ASTRA_DB_APPLICATION_TOKEN,
+        });
+        assert.strictEqual(true, false);
+      } catch (e) {
+        assert.strictEqual(astraClient, null);
+      }
+      global.window = undefined;
+    });
+
+    it("should initialize with a token", async () => {
+      const astraClient = await astraRest.createClient({
+        astraDatabaseId: process.env.ASTRA_DB_ID,
+        astraDatabaseRegion: process.env.ASTRA_DB_REGION,
+        authToken: "token",
+      });
+      assert.notStrictEqual(astraClient, null);
+    });
+
+    it("should initialize with a token function", async () => {
+      const astraClient = await astraRest.createClient({
+        astraDatabaseId: process.env.ASTRA_DB_ID,
+        astraDatabaseRegion: process.env.ASTRA_DB_REGION,
+        getAuthToken: () => {
+          return "token";
+        },
+      });
+      assert.notStrictEqual(astraClient, null);
+    });
+
+    it("should not initialize without a token", async () => {
+      let astraClient = null;
+      try {
+        astraClient = await astraRest.createClient({
+          astraDatabaseId: process.env.ASTRA_DB_ID,
+          astraDatabaseRegion: process.env.ASTRA_DB_REGION,
+          getAuthToken: () => {},
+        });
+        assert.strictEqual(true, false);
+      } catch (e) {
+        assert.strictEqual(astraClient, null);
+      }
     });
   });
 
@@ -54,7 +114,7 @@ describe("AstraJS REST", () => {
         configFile: "/tmp/.astratestrc",
       });
 
-      assert.notEqual(astraClient, null);
+      assert.notStrictEqual(astraClient, null);
     });
   });
 
@@ -67,7 +127,7 @@ describe("AstraJS REST", () => {
         password: process.env.STARGATE_PASSWORD,
       });
 
-      assert.notEqual(stargateClient, null);
+      assert.notStrictEqual(stargateClient, null);
     });
   });
 
@@ -94,8 +154,20 @@ describe("AstraJS REST", () => {
       });
 
       const res = await astraClient.get(documentPath);
-      assert.equal(res.data.firstName, "Cliff");
-      assert.equal(res.data.emails[0], "cliff.wicklow@example.com");
+      assert.strictEqual(res.data.firstName, "Cliff");
+      assert.strictEqual(res.data.emails[0], "cliff.wicklow@example.com");
+    });
+
+    it("should throw an error", async () => {
+      let res = null;
+      try {
+        res = await astraClient.put("?$[]", {
+          firstName: "Cliff",
+        });
+        assert.strictEqual(true, false);
+      } catch (e) {
+        assert.strictEqual(res, null);
+      }
     });
 
     it("should PUT to a subdocument", async () => {
@@ -107,7 +179,7 @@ describe("AstraJS REST", () => {
       });
 
       const res = await astraClient.get(`${documentPath}/addresses`);
-      assert.equal(res.data.home.city, "New York");
+      assert.strictEqual(res.data.home.city, "New York");
     });
 
     it("should PATCH a document", async () => {
@@ -118,12 +190,12 @@ describe("AstraJS REST", () => {
       });
 
       const res = await astraClient.get(documentPath);
-      assert.equal(res.data.addresses.home.city, "Buffalo");
+      assert.strictEqual(res.data.addresses.home.city, "Buffalo");
     });
 
     it("should DELETE a document", async () => {
       const res = await astraClient.delete(documentPath);
-      assert.equal(res.status, 204);
+      assert.strictEqual(res.status, 204);
     });
   });
 
@@ -161,8 +233,8 @@ describe("AstraJS REST", () => {
       });
 
       const res = await stargateClient.get(documentPath);
-      assert.equal(res.data.firstName, "Cliff");
-      assert.equal(res.data.emails[0], "cliff.wicklow@example.com");
+      assert.strictEqual(res.data.firstName, "Cliff");
+      assert.strictEqual(res.data.emails[0], "cliff.wicklow@example.com");
     });
 
     it("should PUT to a subdocument", async () => {
@@ -174,7 +246,7 @@ describe("AstraJS REST", () => {
       });
 
       const res = await stargateClient.get(`${documentPath}/addresses`);
-      assert.equal(res.data.home.city, "New York");
+      assert.strictEqual(res.data.home.city, "New York");
     });
 
     it("should PATCH a document", async () => {
@@ -185,12 +257,12 @@ describe("AstraJS REST", () => {
       });
 
       const res = await stargateClient.get(documentPath);
-      assert.equal(res.data.addresses.home.city, "Buffalo");
+      assert.strictEqual(res.data.addresses.home.city, "Buffalo");
     });
 
     it("should DELETE a document", async () => {
       const res = await stargateClient.delete(documentPath);
-      assert.equal(res.status, 204);
+      assert.strictEqual(res.status, 204);
     });
   });
 });

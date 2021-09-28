@@ -146,9 +146,9 @@ const axiosRequest = async (options) => {
   try {
     const authHeader = {};
     if (options.applicationToken) {
-      authHeader["X-Cassandra-Token"] = options.applicationToken;
+      authHeader[options.authHeaderName] = options.applicationToken;
     } else {
-      authHeader["X-Cassandra-Token"] = options.authToken
+      authHeader[options.authHeaderName] = options.authToken
         ? options.authToken
         : "";
     }
@@ -217,6 +217,7 @@ class AstraClient {
     this.setAuthToken = options.setAuthToken;
     this.username = options.username;
     this.password = options.password;
+    this.authHeaderName = options.authHeaderName || "X-Cassandra-Token";
   }
 
   async _getAuthToken() {
@@ -254,6 +255,7 @@ class AstraClient {
       ...options,
       authToken: this.authToken,
       applicationToken: this.applicationToken,
+      authHeaderName: this.authHeaderName,
     });
     if (
       response.status === 401 &&

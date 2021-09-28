@@ -58,11 +58,14 @@ class AstraCollection {
 
   async _get(path, options) {
     const fullPath = path ? `${this.basePath}/${path}` : this.basePath;
-    const response = await this.restClient.get(fullPath, options);
-    if (response.status === 200) {
-      return response.data;
+    try {
+      const response = await this.restClient.get(fullPath, options);
+      if (response.status === 200) {
+        return response.data;
+      }
+    } catch (e) {
+      return null;
     }
-    return null;
   }
 
   async _put(path, document) {

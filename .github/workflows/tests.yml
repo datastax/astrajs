@@ -33,7 +33,7 @@ jobs:
     runs-on: ubuntu-latest
     services:
       stargate:
-        image: stargateio/stargate-dse-68:v1.0.23
+        image: stargateio/stargate-dse-68:v1.0.34
         env:
           CLUSTER_NAME: stargate
           CLUSTER_VERSION: 6.8
@@ -56,9 +56,9 @@ jobs:
       - name: setup lerna
         run: |
           npm install -g lerna
-          lerna bootstrap --ignore @astrajs/setupdb
+          lerna bootstrap
       - name: wait for stargate
         run: |
           sleep 1m
       - name: run tests
-        run: lerna run test --ignore @astrajs/setupdb
+        run: lerna run test

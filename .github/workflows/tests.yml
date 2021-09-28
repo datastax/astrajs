@@ -56,9 +56,9 @@ jobs:
       - name: setup lerna
         run: |
           npm install -g lerna
-          lerna bootstrap --ignore @astrajs/setupdb
+          lerna bootstrap
       - name: wait for stargate
         run: |
           sleep 1m
       - name: run tests
-        run: lerna run test --ignore @astrajs/setupdb
+        run: lerna run test

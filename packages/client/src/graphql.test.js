@@ -17,7 +17,6 @@
 const assert = require("assert");
 const astraCollections = require("@astrajs/collections");
 const { AstraGraphQL, gql } = require("./graphql");
-const faker = require("faker");
 
 // setup envars
 require("dotenv").config();
@@ -39,7 +38,6 @@ describe("AstraGraphQL", () => {
   describe("AstraGraphQL API", () => {
     // setup test context
     const keyspace = process.env.ASTRA_DB_KEYSPACE;
-    const documentId = faker.random.alphaNumeric(8);
     let astraGqlClient = null;
 
     before(async () => {
@@ -63,22 +61,6 @@ describe("AstraGraphQL", () => {
         `,
       });
       assert.notStrictEqual(res.data.keyspaces, []);
-    });
-
-    it("should query a namespace", async () => {
-      const keyspaceClient = astraGqlClient.getKeyspace(keyspace);
-      const res = await keyspaceClient.query({
-        query: gql`
-          {
-            test {
-              values {
-                leaf
-              }
-            }
-          }
-        `,
-      });
-      assert.notStrictEqual(res.data.test.values, []);
     });
   });
 });

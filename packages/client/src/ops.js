@@ -28,255 +28,340 @@ class AstraOps {
   }
 
   async getDatabases() {
-    return await this.client.get(`${PATH_PREFIX}/databases`);
+    const res = await this.client.get(`${PATH_PREFIX}/databases`);
+    return res.data;
   }
 
   async createDatabase(databaseDefinition) {
-    return await this.client.post(
+    const res = await this.client.post(
       `${PATH_PREFIX}/databases`,
       databaseDefinition
     );
+    return res.data;
   }
 
   async getDatabase(database) {
-    return await this.client.get(`${PATH_PREFIX}/databases/${database}`);
+    const res = await this.client.get(`${PATH_PREFIX}/databases/${database}`);
+    return res.data;
   }
 
   async createKeyspace(database, keyspace) {
-    return await this.client.post(
+    const res = await this.client.post(
       `${PATH_PREFIX}/databases/${database}/keyspaces/${keyspace}`
     );
+    return res.data;
   }
 
   async terminateDatabase(database) {
-    return await this.client.post(
+    const res = await this.client.post(
       `${PATH_PREFIX}/databases/${database}/terminate`
     );
+    return res.data;
   }
 
   async parkDatabase(database) {
-    return await this.client.post(`${PATH_PREFIX}/databases/${database}/park`);
+    const res = await this.client.post(
+      `${PATH_PREFIX}/databases/${database}/park`
+    );
+    return res.data;
   }
 
   async unparkDatabase(database) {
-    return await this.client.post(
+    const res = await this.client.post(
       `${PATH_PREFIX}/databases/${database}/unpark`
     );
+    return res.data;
   }
 
   async resizeDatabase(database, options) {
-    return await this.client.post(
+    const res = await this.client.post(
       `${PATH_PREFIX}/databases/${database}/resize`,
       options
     );
+    return res.data;
   }
 
   async resetDatabasePassword(database, options) {
-    return await this.client.post(
+    const res = await this.client.post(
       `${PATH_PREFIX}/databases/${database}/resetPassword`,
       options
     );
+    return res.data;
   }
 
   async getSecureBundle(database) {
-    return await this.client.post(
-      `${PATH_PREFIX}/databases/${database}/secureBundleURL`,
-      options
+    const res = await this.client.post(
+      `${PATH_PREFIX}/databases/${database}/secureBundleURL`
     );
+    return res.data;
   }
 
   async getDatacenters(database) {
-    return await this.client.get(
+    const res = await this.client.get(
       `${PATH_PREFIX}/databases/${database}/datacenters`
     );
+    return res.data;
   }
 
   async createDatacenter(database, options) {
-    return await this.client.get(
+    const res = await this.client.get(
       `${PATH_PREFIX}/databases/${database}/datacenters`,
       options
     );
+    return res.data;
   }
 
   async terminateDatacenter(database, datacenter) {
-    return await this.client.post(
+    const res = await this.client.post(
       `${PATH_PREFIX}/databases/${database}/datacenters/${datacenter}/terminate`
     );
+    return res.data;
   }
 
   async getAccessList(database) {
-    return await this.client.get(
+    const res = await this.client.get(
       `${PATH_PREFIX}/databases/${database}/access-list`
     );
+    return res.data;
   }
 
   async replaceAccessList(database, accessList) {
-    return await this.client.put(
+    const res = await this.client.put(
       `${PATH_PREFIX}/databases/${database}/access-list`,
       accessList
     );
+    return res.data;
   }
 
   async updateAccessList(database, accessList) {
-    return await this.client.patch(
+    const res = await this.client.patch(
       `${PATH_PREFIX}/databases/${database}/access-list`,
       accessList
     );
+    return res.data;
   }
 
   async addAccessListAddress(database, address) {
-    return await this.client.post(
+    const res = await this.client.post(
       `${PATH_PREFIX}/databases/${database}/access-list`,
       address
     );
   }
 
   async deleteAccessList(database, addresses) {
-    return await this.client.delete(
+    const res = await this.client.delete(
       `${PATH_PREFIX}/databases/${database}/access-list`,
       addresses
     );
+    return res.data;
   }
 
   async getPrivateLink(database) {
-    return await this.client.get(
+    const res = await this.client.get(
       `${PATH_PREFIX}/organizations/clusters/${database}/private-link`
     );
+    return res.data;
   }
 
   async getDatacenterPrivateLink(database, datacenter) {
-    return await this.client.get(
+    const res = await this.client.get(
       `${PATH_PREFIX}/organizations/clusters/${database}/datacenters/${datacenter}/private-link`
     );
+    return res.data;
   }
 
   async createDatacenterPrivateLink(database, datacenter, privateLink) {
-    return await this.client.post(
+    const res = await this.client.post(
       `${PATH_PREFIX}/organizations/clusters/${database}/datacenters/${datacenter}/private-link`,
       privateLink
     );
+    return res.data;
   }
 
   async createDatacenterEndpoint(database, datacenter, endpoint) {
-    return await this.client.post(
+    const res = await this.client.post(
       `${PATH_PREFIX}/organizations/clusters/${database}/datacenters/${datacenter}/endpoint`,
       endpoint
     );
+    return res.data;
   }
 
   async updateDatacenterEndpoint(database, datacenter, endpoint) {
-    return await this.client.put(
+    const res = await this.client.put(
       `${PATH_PREFIX}/organizations/clusters/${database}/datacenters/${datacenter}/endpoint`,
       endpoint
     );
+    return res.data;
   }
 
   async getDatacenterEndpoint(database, datacenter, endpoint) {
-    return await this.client.get(
+    const res = await this.client.get(
       `${PATH_PREFIX}/organizations/clusters/${database}/datacenters/${datacenter}/endpoints/${endpoint}`
     );
+    return res.data;
   }
 
   async deleteDatacenterEndpoint(database, datacenter, endpoint) {
-    return await this.client.delete(
+    const res = await this.client.delete(
       `${PATH_PREFIX}/organizations/clusters/${database}/datacenters/${datacenter}/endpoints/${endpoint}`
     );
+    return res.data;
   }
 
   async getAvailableClassicRegions() {
-    return await this.client.get(`${PATH_PREFIX}/availableRegions`);
+    const res = await this.client.get(`${PATH_PREFIX}/availableRegions`);
+    return res.data;
   }
 
   async getAvailableRegions() {
-    return await this.client.get(`${PATH_PREFIX}/regions/serverless`);
+    const res = await this.client.get(`${PATH_PREFIX}/regions/serverless`);
+    return res.data;
   }
 
   async getRoles() {
-    return await this.client.get(`${PATH_PREFIX}/organizations/roles`);
+    const res = await this.client.get(`${PATH_PREFIX}/organizations/roles`);
+    return res.data;
   }
 
   async createRole(roleDefinition) {
-    return await this.client.post(
+    const res = await this.client.post(
       `${PATH_PREFIX}/organizations/roles`,
       roleDefinition
     );
+    return res.data;
   }
 
   async getRole(role) {
-    return await this.client.get(`${PATH_PREFIX}/organizations/roles/${role}`);
+    const res = await this.client.get(
+      `${PATH_PREFIX}/organizations/roles/${role}`
+    );
+    return res.data;
   }
 
   async updateRole(role, roleDefinition) {
-    return await this.client.put(
+    const res = await this.client.put(
       `${PATH_PREFIX}/organizations/roles/${role}`,
       roleDefinition
     );
+    return res.data;
   }
 
   async updateUserRoles(user, roles) {
-    return await this.client.put(
+    const res = await this.client.put(
       `${PATH_PREFIX}/organizations/users/${user}/roles`,
       roles
     );
+    return res.data;
   }
 
   async deleteRole(role) {
-    return await this.client.delete(
+    const res = await this.client.delete(
       `${PATH_PREFIX}/organizations/roles/${role}`
     );
+    return res.data;
   }
 
   async inviteUser(userDefinition) {
-    return await this.client.put(
+    const res = await this.client.put(
       `${PATH_PREFIX}/organizations/users`,
       userDefinition
     );
+    return res.data;
   }
 
   async getUsers() {
-    return await this.client.get(`${PATH_PREFIX}/organizations/users`);
+    const res = await this.client.get(`${PATH_PREFIX}/organizations/users`);
+    return res.data;
   }
 
   async getUser(user) {
-    return await this.client.get(`${PATH_PREFIX}/organizations/users/${user}`);
+    const res = await this.client.get(
+      `${PATH_PREFIX}/organizations/users/${user}`
+    );
+    return res.data;
   }
 
   async removeUser(user) {
-    return await this.client.delete(
+    const res = await this.client.delete(
       `${PATH_PREFIX}/organizations/users/${user}`
     );
+    return res.data;
   }
 
   async getClients() {
-    return await this.client.get(`${PATH_PREFIX}/clientIdSecrets`);
+    const res = await this.client.get(`${PATH_PREFIX}/clientIdSecrets`);
+    return res.data;
   }
 
   async createToken(roles) {
-    return await this.client.post(`${PATH_PREFIX}/clientIdSecrets`, roles);
+    const res = await this.client.post(`${PATH_PREFIX}/clientIdSecrets`, roles);
+    return res.data;
   }
 
   async revokeToken(token) {
-    return await this.client.post(`${PATH_PREFIX}/clientIdSecret/${token}`);
+    const res = await this.client.post(
+      `${PATH_PREFIX}/clientIdSecret/${token}`
+    );
+    return res.data;
   }
 
   async getOrganization() {
-    return await this.client.get(`${PATH_PREFIX}/currentOrg`);
+    const res = await this.client.get(`${PATH_PREFIX}/currentOrg`);
+    return res.data;
   }
 
   async getAccessLists() {
-    return await this.client.get(`${PATH_PREFIX}/access-lists`);
+    const res = await this.client.get(`${PATH_PREFIX}/access-lists`);
+    return res.data;
   }
 
   async getAccessListTemplate() {
-    return await this.client.get(`${PATH_PREFIX}/access-list/template`);
+    const res = await this.client.get(`${PATH_PREFIX}/access-list/template`);
+    return res.data;
   }
 
   async validateAccessList() {
-    return await this.client.post(`${PATH_PREFIX}/access-list/validate`);
+    const res = await this.client.post(`${PATH_PREFIX}/access-list/validate`);
+    return res.data;
   }
 
   async getPrivateLinks() {
-    return await this.client.get(`${PATH_PREFIX}/organizations/private-link`);
+    const res = await this.client.get(
+      `${PATH_PREFIX}/organizations/private-link`
+    );
+    return res.data;
+  }
+
+  async getStreamingProviders() {
+    const res = await this.client.get(`${PATH_PREFIX}/streaming/providers`);
+    return res.data;
+  }
+
+  async getStreamingTenants() {
+    const res = await this.client.get(`${PATH_PREFIX}/streaming/tenants`);
+    return res.data;
+  }
+
+  async createStreamingTenant(tenant) {
+    const res = await this.client.post(
+      `${PATH_PREFIX}/streaming/tenants`,
+      tenant
+    );
+    return res.data;
+  }
+
+  async deleteStreamingTenant(tenant, cluster) {
+    const res = await this.client.delete(
+      `${PATH_PREFIX}/streaming/tenants/${tenant}/clusters/${cluster}`
+    );
+    return res.data;
+  }
+
+  async getStreamingTenant(tenant) {
+    const res = await this.client.post(
+      `${PATH_PREFIX}/streaming/tenants/${tenant}/limits`
+    );
+    return res.data;
   }
 }
 

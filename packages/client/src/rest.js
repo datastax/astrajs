@@ -14,51 +14,63 @@
 
 "use strict";
 
-const PATH_PREFIX = "/api/rest/v2/keyspaces";
-
 class AstraRest {
   constructor(client) {
+    this.basePath = client.baseApiPath
+      ? client.baseApiPath
+      : "/api/rest/v2/keyspaces";
     this.client = client;
   }
 
   async searchTable(keyspace, table, query, options) {
-    return await this.client.get(`${PATH_PREFIX}/${keyspace}/${table}`, {
-      ...options,
-      query,
+    const res = await this.client.get(`${this.basePath}/${keyspace}/${table}`, {
+      params: {
+        where: query,
+        ...options,
+      },
     });
+    return res.data;
   }
 
   async addRow(keyspace, table, row) {
-    return await this.client.post(`${PATH_PREFIX}/${keyspace}/${table}`, row);
+    const res = await this.client.post(
+      `${this.basePath}/${keyspace}/${table}`,
+      row
+    );
+    return res.data;
   }
 
-  async getRow(keyspace, table, keyPath, options) {
-    return await this.client.get(
-      `${PATH_PREFIX}/${keyspace}/${table}/${keyPath}`,
+  async getRows(keyspace, table, keyPath, options) {
+    const res = await this.client.get(
+      `${this.basePath}/${keyspace}/${table}/${keyPath}`,
       {
         ...options,
       }
     );
+    return res.data;
   }
 
-  async replaceRow(keyspace, table, keyPath, row) {
-    return await this.client.put(
-      `${PATH_PREFIX}/${keyspace}/${table}/${keyPath}`,
+  async replaceRows(keyspace, table, keyPath, row) {
+    const res = await this.client.put(
+      `${this.basePath}/${keyspace}/${table}/${keyPath}`,
       row
     );
+    return res.data;
   }
 
-  async updateRow(keyspace, table, keyPath, row) {
-    return await this.client.patch(
-      `${PATH_PREFIX}/${keyspace}/${table}/${keyPath}`,
+  async updateRows(keyspace, table, keyPath, row) {
+    const res = await this.client.patch(
+      `${this.basePath}/${keyspace}/${table}/${keyPath}`,
       row
     );
+    return res.data;
   }
 
-  async deleteRow(keyspace, table, keyPath) {
-    return await this.client.delete(
-      `${PATH_PREFIX}/${keyspace}/${table}/${keyPath}`
+  async deleteRows(keyspace, table, keyPath) {
+    const res = await this.client.delete(
+      `${this.basePath}/${keyspace}/${table}/${keyPath}`
     );
+    return res.data;
   }
 }
 

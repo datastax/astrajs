@@ -78,8 +78,8 @@ describe("AstraJS - Collections", () => {
       let testCollection = null;
       let testSchemaCollection = null;
       const namespace = process.env.ASTRA_DB_KEYSPACE;
-      const collection = "test";
-      const schemaCollection = "schema_test";
+      const collection = `test_${faker.random.alphaNumeric(8)}`;
+      const schemaCollection = `schema_test_${faker.random.alphaNumeric(8)}`;
       const documentId = faker.random.alphaNumeric(8);
       const schema = {
         $id: "https://example.com/person.schema.json",

@@ -17,6 +17,7 @@
 const assert = require("assert");
 const astraCollections = require("@astrajs/collections");
 const { AstraRest } = require("./rest");
+const faker = require("faker");
 
 // setup envars
 require("dotenv").config();
@@ -68,7 +69,7 @@ describe("AstraRest", () => {
       let restClient = null;
       let astraClient = null;
       const table = {
-        name: "users",
+        name: `users_${faker.random.alphaNumeric(8)}`,
         columnDefinitions: [
           {
             name: "firstname",

@@ -17,6 +17,7 @@
 const assert = require("assert");
 const astraCollections = require("@astrajs/collections");
 const { AstraSchemas } = require("./schemas");
+const faker = require("faker");
 
 // setup envars
 require("dotenv").config();
@@ -60,7 +61,7 @@ describe("AstraSchemas", () => {
       const keyspace = process.env.ASTRA_DB_KEYSPACE;
       let schemasClient = null;
       const table = {
-        name: "users",
+        name: `users_${faker.random.alphaNumeric(8)}`,
         columnDefinitions: [
           {
             name: "firstname",

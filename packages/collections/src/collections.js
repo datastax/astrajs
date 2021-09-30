@@ -32,8 +32,31 @@ class AstraDocumentClient {
 
 class AstraNamespace {
   constructor(restClient, namespaceName) {
+    const basePath = restClient.baseApiPath
+      ? restClient.baseApiPath
+      : DEFAULT_BASE_PATH;
     this.restClient = restClient;
     this.namespaceName = namespaceName;
+    this.basePath = `${basePath}/${namespaceName}`;
+  }
+
+  async getCollections() {
+    const res = await this.restClient.get(`${this.basePath}/collections`);
+    return res.data;
+  }
+
+  async createCollection(collectionName) {
+    const res = await this.restClient.post(`${this.basePath}/collections`, {
+      name: collectionName,
+    });
+    return res.data;
+  }
+
+  async deleteCollection(collectionName) {
+    const res = await this.restClient.delete(
+      `${this.basePath}/collections/${collectionName}`
+    );
+    return res.data;
   }
 
   collection(collectionName) {
@@ -69,14 +92,25 @@ class AstraCollection {
   }
 
   async _put(path, document) {
-    const response = await this.restClient.put(
-      `${this.basePath}/${path}`,
-      document
-    );
-    if (response.status === 200) {
-      return response.data;
-    }
-    return null;
+    const res = await this.restClient.put(`${this.basePath}/${path}`, document);
+    return res.data;
+  }
+
+  async upgrade() {
+    const res = await this.restClient.post(`${this.basePath}/upgrade`);
+    return res.data;
+  }
+
+  async getSchema() {
+    return await this._get("json-schema");
+  }
+
+  async createSchema(schema) {
+    return await this._put("json-schema", schema);
+  }
+
+  async updateSchema(schema) {
+    return await this._put("json-schema", schema);
   }
 
   async get(path) {
@@ -114,22 +148,26 @@ class AstraCollection {
     if (!_.isPlainObject(path)) {
       return this._put(path, document);
     }
-    const response = await this.restClient.post(`${this.basePath}`, path);
-    if (response.status === 201) {
-      return response.data;
-    }
-    return null;
+    const res = await this.restClient.post(`${this.basePath}`, path);
+    return res.data;
+  }
+
+  async batch(documents, idPath) {
+    idPath = idPath ? idPath : "documentId";
+    const res = await this.restClient.post(
+      `${this.basePath}/batch`,
+      documents,
+      { params: { "id-path": idPath } }
+    );
+    return res.data;
   }
 
   async update(path, document) {
-    const response = await this.restClient.patch(
+    const res = await this.restClient.patch(
       `${this.basePath}/${path}`,
       document
     );
-    if (response.status === 200) {
-      return response.data;
-    }
-    return null;
+    return res.data;
   }
 
   async replace(path, document) {
@@ -137,11 +175,28 @@ class AstraCollection {
   }
 
   async delete(path) {
-    const response = await this.restClient.delete(`${this.basePath}/${path}`);
-    if (response.status === 204) {
-      return { documentId: path, deleted: true };
-    }
-    return null;
+    await this.restClient.delete(`${this.basePath}/${path}`);
+    return { documentId: path, deleted: true };
+  }
+
+  async push(path, value) {
+    const res = await this.restClient.post(
+      `${this.basePath}/${path}/function`,
+      {
+        operation: "$push",
+        value: value,
+      }
+    );
+    return res.data;
+  }
+  async pop(path) {
+    const res = await this.restClient.post(
+      `${this.basePath}/${path}/function`,
+      {
+        operation: "$pop",
+      }
+    );
+    return res.data;
   }
 }
 

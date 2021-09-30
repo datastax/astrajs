@@ -78,8 +78,117 @@ class AstraOps {
     );
   }
 
-  async getAvailableRegions() {
+  async getSecureBundle(database) {
+    return await this.client.post(
+      `${PATH_PREFIX}/databases/${database}/secureBundleURL`,
+      options
+    );
+  }
+
+  async getDatacenters(database) {
+    return await this.client.get(
+      `${PATH_PREFIX}/databases/${database}/datacenters`
+    );
+  }
+
+  async createDatacenter(database, options) {
+    return await this.client.get(
+      `${PATH_PREFIX}/databases/${database}/datacenters`,
+      options
+    );
+  }
+
+  async terminateDatacenter(database, datacenter) {
+    return await this.client.post(
+      `${PATH_PREFIX}/databases/${database}/datacenters/${datacenter}/terminate`
+    );
+  }
+
+  async getAccessList(database) {
+    return await this.client.get(
+      `${PATH_PREFIX}/databases/${database}/access-list`
+    );
+  }
+
+  async replaceAccessList(database, accessList) {
+    return await this.client.put(
+      `${PATH_PREFIX}/databases/${database}/access-list`,
+      accessList
+    );
+  }
+
+  async updateAccessList(database, accessList) {
+    return await this.client.patch(
+      `${PATH_PREFIX}/databases/${database}/access-list`,
+      accessList
+    );
+  }
+
+  async addAccessListAddress(database, address) {
+    return await this.client.post(
+      `${PATH_PREFIX}/databases/${database}/access-list`,
+      address
+    );
+  }
+
+  async deleteAccessList(database, addresses) {
+    return await this.client.delete(
+      `${PATH_PREFIX}/databases/${database}/access-list`,
+      addresses
+    );
+  }
+
+  async getPrivateLink(database) {
+    return await this.client.get(
+      `${PATH_PREFIX}/organizations/clusters/${database}/private-link`
+    );
+  }
+
+  async getDatacenterPrivateLink(database, datacenter) {
+    return await this.client.get(
+      `${PATH_PREFIX}/organizations/clusters/${database}/datacenters/${datacenter}/private-link`
+    );
+  }
+
+  async createDatacenterPrivateLink(database, datacenter, privateLink) {
+    return await this.client.post(
+      `${PATH_PREFIX}/organizations/clusters/${database}/datacenters/${datacenter}/private-link`,
+      privateLink
+    );
+  }
+
+  async createDatacenterEndpoint(database, datacenter, endpoint) {
+    return await this.client.post(
+      `${PATH_PREFIX}/organizations/clusters/${database}/datacenters/${datacenter}/endpoint`,
+      endpoint
+    );
+  }
+
+  async updateDatacenterEndpoint(database, datacenter, endpoint) {
+    return await this.client.put(
+      `${PATH_PREFIX}/organizations/clusters/${database}/datacenters/${datacenter}/endpoint`,
+      endpoint
+    );
+  }
+
+  async getDatacenterEndpoint(database, datacenter, endpoint) {
+    return await this.client.get(
+      `${PATH_PREFIX}/organizations/clusters/${database}/datacenters/${datacenter}/endpoints/${endpoint}`
+    );
+  }
+
+  async deleteDatacenterEndpoint(database, datacenter, endpoint) {
+    return await this.client.delete(
+      `${PATH_PREFIX}/organizations/clusters/${database}/datacenters/${datacenter}/endpoints/${endpoint}`
+    );
+  }
+
+  async getAvailableClassicRegions() {
     return await this.client.get(`${PATH_PREFIX}/availableRegions`);
+  }
+
+  async getAvailableRegions() {
+    return await this.client.get(`${PATH_PREFIX}/regions/serverless`);
   }
 
   async getRoles() {
@@ -101,6 +210,13 @@ class AstraOps {
     return await this.client.put(
       `${PATH_PREFIX}/organizations/roles/${role}`,
       roleDefinition
+    );
+  }
+
+  async updateUserRoles(user, roles) {
+    return await this.client.put(
+      `${PATH_PREFIX}/organizations/users/${user}/roles`,
+      roles
     );
   }
 
@@ -131,13 +247,6 @@ class AstraOps {
     );
   }
 
-  async updateUserRoles(user, roles) {
-    return await this.client.put(
-      `${PATH_PREFIX}/organizations/users/${user}/roles`,
-      roles
-    );
-  }
-
   async getClients() {
     return await this.client.get(`${PATH_PREFIX}/clientIdSecrets`);
   }
@@ -146,12 +255,28 @@ class AstraOps {
     return await this.client.post(`${PATH_PREFIX}/clientIdSecrets`, roles);
   }
 
-  async deleteToken(token) {
+  async revokeToken(token) {
     return await this.client.post(`${PATH_PREFIX}/clientIdSecret/${token}`);
   }
 
   async getOrganization() {
     return await this.client.get(`${PATH_PREFIX}/currentOrg`);
+  }
+
+  async getAccessLists() {
+    return await this.client.get(`${PATH_PREFIX}/access-lists`);
+  }
+
+  async getAccessListTemplate() {
+    return await this.client.get(`${PATH_PREFIX}/access-list/template`);
+  }
+
+  async validateAccessList() {
+    return await this.client.post(`${PATH_PREFIX}/access-list/validate`);
+  }
+
+  async getPrivateLinks() {
+    return await this.client.get(`${PATH_PREFIX}/organizations/private-link`);
   }
 }
 

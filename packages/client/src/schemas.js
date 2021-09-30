@@ -14,100 +14,168 @@
 
 "use strict";
 
-const PATH_PREFIX = "/api/rest/v2/schemas";
-
 class AstraSchemas {
   constructor(client) {
+    this.basePath = client.baseApiPath
+      ? client.baseApiPath
+      : "/api/rest/v2/schemas";
     this.client = client;
   }
 
   async getKeyspaces() {
-    return await this.client.get(`${PATH_PREFIX}/keyspaces`);
+    const res = await this.client.get(`${this.basePath}/keyspaces`);
+    return res.data;
   }
 
   async getKeyspace(keyspace) {
-    return await this.client.get(`${PATH_PREFIX}/keyspaces/${keyspace}`);
+    const res = await this.client.get(`${this.basePath}/keyspaces/${keyspace}`);
+    return res.data;
+  }
+
+  async createKeyspace(keyspace) {
+    const res = await this.client.post(`${this.basePath}/keyspaces`, keyspace);
+    return res.data;
+  }
+
+  async deleteKeyspace(keyspace) {
+    const res = await this.client.delete(
+      `${this.basePath}/keyspaces/${keyspace}`
+    );
+    return res.data;
   }
 
   async createTable(keyspace, table) {
-    return await this.client.post(
-      `${PATH_PREFIX}/keyspaces/${keyspace}/tables`,
+    const res = await this.client.post(
+      `${this.basePath}/keyspaces/${keyspace}/tables`,
       table
     );
+
+    return res.data;
   }
 
   async getTables(keyspace) {
-    return await this.client.get(`${PATH_PREFIX}/keyspaces/${keyspace}/tables`);
+    const res = await this.client.get(
+      `${this.basePath}/keyspaces/${keyspace}/tables`
+    );
+    return res.data;
   }
 
   async getTable(keyspace, table) {
-    return await this.client.get(
-      `${PATH_PREFIX}/keyspaces/${keyspace}/tables/${table}`
+    const res = await this.client.get(
+      `${this.basePath}/keyspaces/${keyspace}/tables/${table}`
     );
+    return res.data;
   }
 
   async updateTable(keyspace, table, tableDefinition) {
-    return await this.client.put(
-      `${PATH_PREFIX}/keyspaces/${keyspace}/tables/${table}`,
+    const res = await this.client.put(
+      `${this.basePath}/keyspaces/${keyspace}/tables/${table}`,
       tableDefinition
     );
+    return res.data;
   }
 
   async deleteTable(keyspace, table) {
-    return await this.client.delete(
-      `${PATH_PREFIX}/keyspaces/${keyspace}/tables/${table}`
+    const res = await this.client.delete(
+      `${this.basePath}/keyspaces/${keyspace}/tables/${table}`
     );
+    return res.data;
   }
 
   async createColumn(keyspace, table, columnDefinition) {
-    return await this.client.post(
-      `${PATH_PREFIX}/keyspaces/${keyspace}/tables/${table}`,
+    const res = await this.client.post(
+      `${this.basePath}/keyspaces/${keyspace}/tables/${table}/columns`,
       columnDefinition
     );
+    return res.data;
   }
 
   async getColumns(keyspace, table) {
-    return await this.client.get(
-      `${PATH_PREFIX}/keyspaces/${keyspace}/tables/${table}/columns`
+    const res = await this.client.get(
+      `${this.basePath}/keyspaces/${keyspace}/tables/${table}/columns`
     );
+    return res.data;
   }
 
   async getColumn(keyspace, table, column) {
-    return await this.client.get(
-      `${PATH_PREFIX}/keyspaces/${keyspace}/tables/${table}/columns/${column}`
+    const res = await this.client.get(
+      `${this.basePath}/keyspaces/${keyspace}/tables/${table}/columns/${column}`
     );
+    return res.data;
   }
 
   async updateColumn(keyspace, table, column, columnDefinition) {
-    return await this.client.put(
-      `${PATH_PREFIX}/keyspaces/${keyspace}/tables/${table}/columns/${column}`,
+    const res = await this.client.put(
+      `${this.basePath}/keyspaces/${keyspace}/tables/${table}/columns/${column}`,
       columnDefinition
     );
+    return res.data;
   }
 
   async deleteColumn(keyspace, table, column) {
-    return await this.client.delete(
-      `${PATH_PREFIX}/keyspaces/${keyspace}/tables/${table}/columns/${column}`
+    const res = await this.client.delete(
+      `${this.basePath}/keyspaces/${keyspace}/tables/${table}/columns/${column}`
     );
+    return res.data;
   }
 
   async getIndexes(keyspace, table) {
-    return await this.client.get(
-      `${PATH_PREFIX}/keyspaces/${keyspace}/tables/${table}/indexes`
+    const res = await this.client.get(
+      `${this.basePath}/keyspaces/${keyspace}/tables/${table}/indexes`
     );
+    return res.data;
   }
 
   async createIndex(keyspace, table, indexDefinition) {
-    return await this.client.post(
-      `${PATH_PREFIX}/keyspaces/${keyspace}/tables/${table}/indexes`,
+    const res = await this.client.post(
+      `${this.basePath}/keyspaces/${keyspace}/tables/${table}/indexes`,
       indexDefinition
     );
+    return res.data;
   }
 
   async deleteIndex(keyspace, table, index) {
-    return await this.client.delete(
-      `${PATH_PREFIX}/keyspaces/${keyspace}/tables/${table}/indexes/${index}`
+    const res = await this.client.delete(
+      `${this.basePath}/keyspaces/${keyspace}/tables/${table}/indexes/${index}`
     );
+    return res.data;
+  }
+
+  async getTypes(keyspace) {
+    const res = await this.client.get(
+      `${this.basePath}/keyspaces/${keyspace}/types`
+    );
+    return res.data;
+  }
+
+  async getType(keyspace, type) {
+    const res = await this.client.get(
+      `${this.basePath}/keyspaces/${keyspace}/types/${type}`
+    );
+    return res.data;
+  }
+
+  async createType(keyspace, type) {
+    const res = await this.client.post(
+      `${this.basePath}/keyspaces/${keyspace}/types`,
+      type
+    );
+    return res.data;
+  }
+
+  async updateType(keyspace, type) {
+    const res = await this.client.put(
+      `${this.basePath}/keyspaces/${keyspace}/types`,
+      type
+    );
+    return res.data;
+  }
+
+  async deleteType(keyspace, type) {
+    const res = await this.client.delete(
+      `${this.basePath}/keyspaces/${keyspace}/types/${type}`
+    );
+    return res.data;
   }
 }
 

@@ -278,6 +278,30 @@ class AstraOps {
   async getPrivateLinks() {
     return await this.client.get(`${PATH_PREFIX}/organizations/private-link`);
   }
+
+  async getStreamingProviders() {
+    return await this.client.get(`${PATH_PREFIX}/streaming/providers`);
+  }
+
+  async getStreamingTenants() {
+    return await this.client.get(`${PATH_PREFIX}/streaming/tenants`);
+  }
+
+  async createStreamingTenant(tenant) {
+    return await this.client.post(`${PATH_PREFIX}/streaming/tenants`, tenant);
+  }
+
+  async deleteStreamingTenant(tenant, cluster) {
+    return await this.client.delete(
+      `${PATH_PREFIX}/streaming/tenants/${tenant}/clusters/${cluster}`
+    );
+  }
+
+  async getStreamingTenant(tenant) {
+    return await this.client.post(
+      `${PATH_PREFIX}/streaming/tenants/${tenant}/limits`
+    );
+  }
 }
 
 module.exports = { AstraOps };

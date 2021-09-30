@@ -37,7 +37,77 @@ describe("Astra Ops", () => {
 
     it("should get databases", async () => {
       const res = await astraOpsClient.getDatabases();
-      assert.notStrictEqual(res.data.databases, []);
+      assert.notStrictEqual(res, []);
+    });
+
+    it("should get a database", async () => {
+      const res = await astraOpsClient.getDatabase(process.env.ASTRA_DB_ID);
+      assert.strictEqual(res.id, process.env.ASTRA_DB_ID);
+    });
+
+    it("should get a secure bundle", async () => {
+      const res = await astraOpsClient.getSecureBundle(process.env.ASTRA_DB_ID);
+      assert.notStrictEqual(res.downloadURL, "");
+    });
+
+    it("should get datacenters", async () => {
+      const res = await astraOpsClient.getDatacenters(process.env.ASTRA_DB_ID);
+      assert.notStrictEqual(res.length, 0);
+    });
+
+    it("should get a private link", async () => {
+      const res = await astraOpsClient.getPrivateLink(process.env.ASTRA_DB_ID);
+      assert.strictEqual(res.clusterID, process.env.ASTRA_DB_ID);
+    });
+
+    it("should get available classic regions", async () => {
+      const res = await astraOpsClient.getAvailableClassicRegions();
+      assert.notStrictEqual(res.length, 0);
+    });
+
+    it("should get available regions", async () => {
+      const res = await astraOpsClient.getAvailableRegions();
+      assert.notStrictEqual(res.length, 0);
+    });
+
+    it("should get roles", async () => {
+      const res = await astraOpsClient.getRoles();
+      assert.notStrictEqual(res.length, 0);
+    });
+
+    it("should get users", async () => {
+      const res = await astraOpsClient.getUsers();
+      assert.notStrictEqual(res.length, 0);
+    });
+
+    it("should get clients", async () => {
+      const res = await astraOpsClient.getClients();
+      assert.notStrictEqual(res.length, 0);
+    });
+
+    it("should get an organization", async () => {
+      const res = await astraOpsClient.getOrganization();
+      assert.notStrictEqual(res.length, 0);
+    });
+
+    it("should get an access list template", async () => {
+      const res = await astraOpsClient.getAccessListTemplate();
+      assert.notStrictEqual(res.length, 0);
+    });
+
+    it("should get all private links", async () => {
+      const res = await astraOpsClient.getPrivateLinks();
+      assert.strictEqual(res.length, 0);
+    });
+
+    it("should get all streaming providers", async () => {
+      const res = await astraOpsClient.getStreamingProviders();
+      assert.notStrictEqual(res.length, 0);
+    });
+
+    it("should get all streaming tenants", async () => {
+      const res = await astraOpsClient.getStreamingTenants();
+      assert.notStrictEqual(res.length, 0);
     });
   });
 });

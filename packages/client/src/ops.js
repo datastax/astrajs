@@ -104,7 +104,7 @@ class AstraOps {
   }
 
   async createDatacenter(database, options) {
-    const res = await this.client.get(
+    const res = await this.client.post(
       `${PATH_PREFIX}/databases/${database}/datacenters`,
       options
     );
@@ -146,6 +146,7 @@ class AstraOps {
       `${PATH_PREFIX}/databases/${database}/access-list`,
       address
     );
+    return res.data;
   }
 
   async deleteAccessList(database, addresses) {
@@ -188,7 +189,7 @@ class AstraOps {
 
   async updateDatacenterEndpoint(database, datacenter, endpoint) {
     const res = await this.client.put(
-      `${PATH_PREFIX}/organizations/clusters/${database}/datacenters/${datacenter}/endpoint`,
+      `${PATH_PREFIX}/organizations/clusters/${database}/datacenters/${datacenter}/endpoints/${endpoint.id}`,
       endpoint
     );
     return res.data;
@@ -299,7 +300,7 @@ class AstraOps {
   }
 
   async revokeToken(token) {
-    const res = await this.client.post(
+    const res = await this.client.delete(
       `${PATH_PREFIX}/clientIdSecret/${token}`
     );
     return res.data;
@@ -358,7 +359,7 @@ class AstraOps {
   }
 
   async getStreamingTenant(tenant) {
-    const res = await this.client.post(
+    const res = await this.client.get(
       `${PATH_PREFIX}/streaming/tenants/${tenant}/limits`
     );
     return res.data;

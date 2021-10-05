@@ -15,7 +15,7 @@
 "use strict";
 
 const astraCollections = require("@astrajs/collections");
-const { AstraGraphQL } = require("./graphql");
+const { AstraGraphQL, gql } = require("./graphql");
 const { AstraRest } = require("./rest");
 const { AstraOps } = require("./ops");
 const { AstraSchemas } = require("./schemas");
@@ -36,4 +36,4 @@ const createAstraClient = async (options) => {
   return new AstraClient(collections);
 };
 
-module.exports = { AstraClient, createAstraClient };
+module.exports = { AstraClient, createAstraClient, gql };

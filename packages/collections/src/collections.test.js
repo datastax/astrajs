@@ -273,9 +273,10 @@ describe("AstraJS - Collections", () => {
           lastName: "Danger",
         });
 
-        const documents = await testCollection.find({
+        const res = await testCollection.find({
           firstName: { $eq: `Cliff-${userId}` },
         });
+        const documents = res.data;
         assert.strictEqual(Object.keys(documents).length, 2);
         assert.strictEqual(documents[userId].lastName, "Wicklow");
         assert.strictEqual(documents[userId2].lastName, "Danger");

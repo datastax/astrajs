@@ -118,7 +118,7 @@ class AstraCollection {
   }
 
   async find(query, options) {
-    return await this._get(null, {
+    return await this.restClient.get(this.basePath, {
       params: {
         where: query,
         "page-size": DEFAULT_PAGE_SIZE,

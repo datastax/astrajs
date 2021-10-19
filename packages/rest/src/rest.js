@@ -169,10 +169,15 @@ const axiosRequest = async (options) => {
         ...authHeader,
       },
     });
-
+    if (response.data.data) {
+      return {
+        status: response.status,
+        ...response.data,
+      };
+    }
     return {
       status: response.status,
-      data: response.data.data ? response.data.data : response.data,
+      data: response.data,
     };
   } catch (error) {
     throw new Error(

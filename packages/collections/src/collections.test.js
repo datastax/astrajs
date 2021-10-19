@@ -280,6 +280,14 @@ describe("AstraJS - Collections", () => {
         assert.strictEqual(Object.keys(documents).length, 2);
         assert.strictEqual(documents[userId].lastName, "Wicklow");
         assert.strictEqual(documents[userId2].lastName, "Danger");
+
+        const res2 = await testCollection.find(
+          {
+            firstName: { $eq: `Cliff-${userId}` },
+          },
+          { "page-size": 1 }
+        );
+        assert.notStrictEqual(res2.pageState, undefined);
       });
 
       it("should find a single document", async () => {

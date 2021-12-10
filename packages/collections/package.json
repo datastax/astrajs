@@ -30,13 +30,13 @@
     "url": "https://github.com/datastax/astrajs/issues"
   },
   "devDependencies": {
-    "dotenv": "^8.2.0",
-    "faker": "^5.3.1",
-    "mocha": "^8.2.1",
+    "dotenv": "^10.0.0",
+    "faker": "^5.5.3",
+    "mocha": "^9.1.3",
     "nyc": "^15.1.0"
   },
   "dependencies": {
     "@astrajs/rest": "^0.3.1",
-    "lodash": "^4.17.20"
+    "lodash": "^4.17.21"
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@astrajs/client",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "DataStax Astra's NodeJS REST client",
   "author": "CRW <chris.wilhite@datastax.com>",
   "homepage": "https://github.com/datastax/astrajs",
@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.5.6",
-    "@astrajs/collections": "^0.3.1",
+    "@astrajs/collections": "^0.3.2",
     "cross-fetch": "^3.1.4",
     "graphql": "^15.7.2",
     "lodash": "^4.17.21"

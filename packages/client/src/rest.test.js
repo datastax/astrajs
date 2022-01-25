@@ -22,9 +22,9 @@ const faker = require("faker");
 // setup envars
 require("dotenv").config();
 
-function sleep(ms) {
+const sleep = (ms) => {
   return new Promise((resolve) => setTimeout(resolve, ms));
-}
+};
 
 const testClients = {
   "Astra DB": async () => {
@@ -129,21 +129,21 @@ describe("AstraRest", () => {
           table.name,
           `${row.firstname}/${row.lastname}`
         );
-        assert.strictEqual(res.data[0].firstname, "Cliff");
+        assert.strictEqual(res[0].firstname, "Cliff");
         const res2 = await restClient.getRows(
           keyspace,
           table.name,
           row.firstname
         );
-        assert.strictEqual(res2.data.length, 3);
+        assert.strictEqual(res2.length, 3);
       });
 
       it("should search a table", async () => {
         const res = await restClient.searchTable(keyspace, table.name, {
           firstname: { $eq: "Cliff" },
         });
-        assert.strictEqual(res.data[0].firstname, "Cliff");
-        assert.strictEqual(res.data.length, 3);
+        assert.strictEqual(res[0].firstname, "Cliff");
+        assert.strictEqual(res.length, 3);
       });
     });
   }

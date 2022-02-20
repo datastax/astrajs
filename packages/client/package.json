@@ -1,6 +1,6 @@
 {
   "name": "@astrajs/client",
-  "version": "0.3.1",
+  "version": "0.3.3",
   "description": "DataStax Astra's NodeJS REST client",
   "author": "CRW <chris.wilhite@datastax.com>",
   "homepage": "https://github.com/datastax/astrajs",

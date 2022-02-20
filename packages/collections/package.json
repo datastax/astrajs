@@ -1,6 +1,6 @@
 {
   "name": "@astrajs/collections",
-  "version": "0.3.1",
+  "version": "0.3.3",
   "description": "DataStax Astra's NodeJS collections client",
   "author": "CRW <chris.wilhite@datastax.com>",
   "homepage": "https://github.com/datastax/astrajs#readme",

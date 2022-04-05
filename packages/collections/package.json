@@ -32,11 +32,11 @@
   "devDependencies": {
     "dotenv": "^16.0.0",
     "faker": "^5.5.3",
-    "mocha": "^9.2.1",
+    "mocha": "^9.2.2",
     "nyc": "^15.1.0"
   },
   "dependencies": {
-    "@astrajs/rest": "^0.3.2",
+    "@astrajs/rest": "^0.3.3",
     "lodash": "^4.17.21"
   }
 }

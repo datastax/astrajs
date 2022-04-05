@@ -30,8 +30,8 @@
     "url": "https://github.com/datastax/astrajs/issues"
   },
   "dependencies": {
-    "@apollo/client": "^3.5.9",
-    "@astrajs/collections": "^0.3.2",
+    "@apollo/client": "^3.5.10",
+    "@astrajs/collections": "^0.3.3",
     "cross-fetch": "^3.1.5",
     "graphql": "^16.3.0",
     "lodash": "^4.17.21"
@@ -39,7 +39,7 @@
   "devDependencies": {
     "dotenv": "^16.0.0",
     "faker": "^5.5.3",
-    "mocha": "^9.2.1",
+    "mocha": "^9.2.2",
     "nyc": "^15.1.0"
   }
 }

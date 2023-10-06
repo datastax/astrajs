@@ -5,7 +5,7 @@ Connect your NodeJS app to your [DataStax Astra Database](https://astra.datastax
 ### Resources
 - [DataStax Astra](https://astra.datastax.com)
 - [Stargate REST API documentation](https://stargate.io/)
-- [Quickstart](https://docs.astra.datastax.com/docs/astra-rest-client)
+- [Quickstart](https://docs.datastax.com/en/astra-serverless/docs/quickstart/qs-rest.html)
 
 ### Quickstart
-Head on over to our official docs to get started: [https://docs.astra.datastax.com/docs/astra-rest-client](https://docs.astra.datastax.com/docs/astra-rest-client)
+Head on over to our official docs to get started: [https://docs.datastax.com/en/astra-serverless/docs/quickstart/qs-rest.html](https://docs.datastax.com/en/astra-serverless/docs/quickstart/qs-rest.html)
